@@ -1,0 +1,496 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="1.0" xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx" xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" xmlns:sap="http://www.sap.com/Protocols/SAPData">
+    <edmx:DataServices m:DataServiceVersion="2.0">
+        <Schema Namespace="TNOW.RNOW_ODATA_SERVICES_SRV" xml:lang="en" sap:schema-version="1" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+            <Annotation Term="Core.SchemaVersion" String="1.0.0" xmlns="http://docs.oasis-open.org/odata/ns/edm"/>
+            <EntityType Name="Subscription" sap:semantics="subscriptions" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="ID"/>
+                </Key>
+                <Property Name="ID" Type="Edm.String" Nullable="false" MaxLength="32" sap:label="Sub. ID" sap:creatable="false" sap:updatable="false" sap:filterable="false"/>
+                <Property Name="user" Type="Edm.String" MaxLength="12" m:FC_TargetPath="SyndicationAuthorName" m:FC_KeepInContent="false" sap:label="User Name" sap:creatable="false" sap:filterable="false"/>
+                <Property Name="updated" Type="Edm.DateTime" Precision="0" m:FC_TargetPath="SyndicationUpdated" m:FC_KeepInContent="false" sap:label="Time Stamp" sap:creatable="false" sap:filterable="false"/>
+                <Property Name="title" Type="Edm.String" MaxLength="255" m:FC_TargetPath="SyndicationTitle" m:FC_KeepInContent="false" sap:label="Title" sap:filterable="false"/>
+                <Property Name="deliveryAddress" Type="Edm.String" sap:label="Delivery Address" sap:filterable="false"/>
+                <Property Name="persistNotifications" Type="Edm.Boolean" sap:label="Persist Notification" sap:filterable="false"/>
+                <Property Name="collection" Type="Edm.String" MaxLength="40" sap:label="Collection" sap:filterable="false"/>
+                <Property Name="filter" Type="Edm.String" sap:label="Filter" sap:filterable="false"/>
+                <Property Name="select" Type="Edm.String" MaxLength="255" sap:label="Select" sap:filterable="false"/>
+                <Property Name="changeType" Type="Edm.String" MaxLength="30" sap:label="Change Type"/>
+            </EntityType>
+            <EntityType Name="Notification" sap:semantics="notifications" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="ID"/>
+                </Key>
+                <Property Name="ID" Type="Edm.String" Nullable="false" MaxLength="32" sap:label="Notification ID"/>
+                <Property Name="collection" Type="Edm.String" MaxLength="40" sap:label="Collection"/>
+                <Property Name="title" Type="Edm.String" m:FC_TargetPath="SyndicationTitle" m:FC_KeepInContent="false" sap:label="Notif. Text"/>
+                <Property Name="updated" Type="Edm.DateTime" Precision="0" m:FC_TargetPath="SyndicationUpdated" m:FC_KeepInContent="false" sap:label="Time Stamp"/>
+                <Property Name="changeType" Type="Edm.String" MaxLength="30" sap:label="Change Type"/>
+                <Property Name="entriesOfInterest" Type="Edm.Int32" sap:label="No. of Entries"/>
+                <Property Name="recipient" Type="Edm.String" MaxLength="112" sap:label="Recipient" sap:creatable="false" sap:updatable="false"/>
+            </EntityType>
+            <EntityType Name="RNOW_NEW" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="LoginUser"/>
+                    <PropertyRef Name="CONNECTOR"/>
+                    <PropertyRef Name="EUSER"/>
+                    <PropertyRef Name="JOB_ID"/>
+                </Key>
+                <Property Name="LoginUser" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="CONNECTOR" Type="Edm.String" Nullable="false" sap:unicode="false" sap:label="Logical destination (specified in function call)"/>
+                <Property Name="EUSER" Type="Edm.String" Nullable="false" sap:unicode="false" sap:label="User Name"/>
+                <Property Name="JOB_ID" Type="Edm.String" Nullable="false" sap:unicode="false" sap:label="Job ID"/>
+                <Property Name="REVCYCLENAME" Type="Edm.String" sap:unicode="false" sap:label="Background Job Name"/>
+                <Property Name="ATT_FISCAL" Type="Edm.String" sap:unicode="false" sap:label="Fiscal year"/>
+                <Property Name="ATT_QUARTERLY" Type="Edm.String" sap:unicode="false" sap:label="Fiscal Quarterly"/>
+                <Property Name="FIRSTNAME" Type="Edm.String" sap:unicode="false" sap:label="First name"/>
+                <Property Name="LASTNAME" Type="Edm.String" sap:unicode="false" sap:label="Last name"/>
+                <Property Name="STATUS" Type="Edm.String" sap:unicode="false" sap:label="Status"/>
+                <Property Name="RoleManager" Type="Edm.String" sap:unicode="false"/>
+                <Property Name="SodReview" Type="Edm.String" sap:unicode="false"/>
+                <Property Name="ParamVal3008" Type="Edm.String" sap:unicode="false"/>
+                <Property Name="UserLockStatus" Type="Edm.String" sap:unicode="false"/>
+                <Property Name="RCount" Type="Edm.String" sap:unicode="false"/>
+                <Property Name="PCount" Type="Edm.String" sap:unicode="false"/>
+                <Property Name="UserGroup" Type="Edm.String" sap:unicode="false"/>
+                <Property Name="LicCat" Type="Edm.String" sap:unicode="false"/>
+                <Property Name="ValidFrom" Type="Edm.String" sap:unicode="false"/>
+                <Property Name="ValidTo" Type="Edm.String" sap:unicode="false"/>
+                <Property Name="LockStatus" Type="Edm.String" sap:unicode="false"/>
+                <Property Name="LastLogon" Type="Edm.String" sap:unicode="false"/>
+                <Property Name="Role" Type="Edm.String" sap:unicode="false"/>
+                <Property Name="PARAM5004" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="REVIEW_TYPE" Type="Edm.String" sap:unicode="false" sap:label="Review type"/>
+                <NavigationProperty Name="REVIEWTOITEMNAV" Relationship="TNOW.RNOW_ODATA_SERVICES_SRV.RNOW_NEW_TO_REVIEWSCREEN" FromRole="FromRole_RNOW_NEW_TO_REVIEWSCREEN" ToRole="ToRole_RNOW_NEW_TO_REVIEWSCREEN"/>
+                <NavigationProperty Name="SAVETOITEMNAV" Relationship="TNOW.RNOW_ODATA_SERVICES_SRV.RNOW_NEW_TO_SAVE" FromRole="FromRole_RNOW_NEW_TO_SAVE" ToRole="ToRole_RNOW_NEW_TO_SAVE"/>
+            </EntityType>
+            <EntityType Name="RNOW_Approval_Review" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="Connector"/>
+                    <PropertyRef Name="Euser"/>
+                    <PropertyRef Name="JobId"/>
+                    <PropertyRef Name="Role"/>
+                </Key>
+                <Property Name="Connector" Type="Edm.String" Nullable="false" sap:unicode="false"/>
+                <Property Name="Euser" Type="Edm.String" Nullable="false" sap:unicode="false"/>
+                <Property Name="JobId" Type="Edm.String" Nullable="false" sap:unicode="false"/>
+                <Property Name="Role" Type="Edm.String" Nullable="false" sap:unicode="false"/>
+                <Property Name="NameText" Type="Edm.String" sap:unicode="false"/>
+                <Property Name="Roledesc" Type="Edm.String" sap:unicode="false"/>
+                <Property Name="RpType" Type="Edm.String" sap:unicode="false"/>
+                <Property Name="RpType1" Type="Edm.String" sap:unicode="false"/>
+                <Property Name="FromDate" Type="Edm.String" sap:unicode="false"/>
+                <Property Name="ToDate" Type="Edm.String" sap:unicode="false"/>
+                <Property Name="UtilizedCount" Type="Edm.String" sap:unicode="false"/>
+                <Property Name="NoOfTcodes" Type="Edm.String" sap:unicode="false"/>
+                <Property Name="UtilizationText" Type="Edm.String" sap:unicode="false"/>
+                <Property Name="LicCat" Type="Edm.String" sap:unicode="false"/>
+                <Property Name="Action" Type="Edm.String" sap:unicode="false"/>
+                <Property Name="Actiondesc" Type="Edm.String" sap:unicode="false"/>
+                <Property Name="Comments" Type="Edm.String" sap:unicode="false"/>
+                <Property Name="CommentsPdef" Type="Edm.String" sap:unicode="false"/>
+                <Property Name="RoleOwner" Type="Edm.String" sap:unicode="false"/>
+                <Property Name="RoleManager" Type="Edm.String" sap:unicode="false"/>
+            </EntityType>
+            <EntityType Name="RNOW_Approval_Terminate" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="FiscalQuarter"/>
+                </Key>
+                <Property Name="FiscalQuarter" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+            </EntityType>
+            <EntityType Name="RNOW_Approval_Reassign" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="JobId"/>
+                    <PropertyRef Name="EUSER"/>
+                </Key>
+                <Property Name="JobId" Type="Edm.String" Nullable="false" sap:unicode="false"/>
+                <Property Name="EUSER" Type="Edm.String" Nullable="false" sap:unicode="false"/>
+                <Property Name="Reviewer1" Type="Edm.String" sap:unicode="false"/>
+                <Property Name="Reviewer2" Type="Edm.String" sap:unicode="false"/>
+                <Property Name="Reviewer3" Type="Edm.String" sap:unicode="false"/>
+                <Property Name="Comments" Type="Edm.String" sap:unicode="false"/>
+                <Property Name="Returnmsg" Type="Edm.String" sap:unicode="false"/>
+                <Property Name="Returncode" Type="Edm.String" sap:unicode="false"/>
+            </EntityType>
+            <EntityType Name="RNOW_Approval_Lock" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="JobId"/>
+                    <PropertyRef Name="BName"/>
+                </Key>
+                <Property Name="JobId" Type="Edm.String" Nullable="false" sap:unicode="false"/>
+                <Property Name="BName" Type="Edm.String" Nullable="false" sap:unicode="false"/>
+                <Property Name="RfcDest" Type="Edm.String" sap:unicode="false"/>
+                <Property Name="Message" Type="Edm.String" sap:unicode="false"/>
+                <Property Name="MessageType" Type="Edm.String" sap:unicode="false"/>
+            </EntityType>
+            <EntityType Name="Submit" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="JobId"/>
+                    <PropertyRef Name="Connector"/>
+                    <PropertyRef Name="EUser"/>
+                    <PropertyRef Name="Role"/>
+                </Key>
+                <Property Name="JobId" Type="Edm.String" Nullable="false" sap:unicode="false"/>
+                <Property Name="Connector" Type="Edm.String" Nullable="false" sap:unicode="false"/>
+                <Property Name="EUser" Type="Edm.String" Nullable="false" sap:unicode="false"/>
+                <Property Name="Role" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="FullName" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="RpType" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="RpType1" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="FromDate" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ToDate" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Action" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ActionDesc" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="UtilizationText" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="NoOfTcodes" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="RoleDesc" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="UtilizedCount" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Comments" Type="Edm.String" sap:unicode="false"/>
+                <Property Name="RoleManager" Type="Edm.String" sap:unicode="false"/>
+                <Property Name="ReviewLevel" Type="Edm.String" sap:unicode="false"/>
+                <Property Name="Status" Type="Edm.String" sap:unicode="false"/>
+                <Property Name="Message" Type="Edm.String" sap:unicode="false"/>
+            </EntityType>
+            <EntityType Name="Closed_display" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="CONNECTOR"/>
+                    <PropertyRef Name="JOB_ID"/>
+                    <PropertyRef Name="EUSER"/>
+                    <PropertyRef Name="ROLE"/>
+                </Key>
+                <Property Name="CONNECTOR" Type="Edm.String" Nullable="false" MaxLength="20" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="JOB_ID" Type="Edm.String" Nullable="false" MaxLength="20" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="EUSER" Type="Edm.String" Nullable="false" MaxLength="12" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ROLE" Type="Edm.String" Nullable="false" MaxLength="30" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="FULLNAME" Type="Edm.String" Nullable="false" MaxLength="80" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="RP_TYPE1" Type="Edm.String" Nullable="false" MaxLength="20" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ROLEDESC" Type="Edm.String" Nullable="false" MaxLength="80" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="LIC_CAT" Type="Edm.String" Nullable="false" MaxLength="20" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="FROM_DATE" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="TO_DATE" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="UTILIZATIONTEXT" Type="Edm.String" Nullable="false" MaxLength="50" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="UTILIZEDCOUNT" Type="Edm.String" Nullable="false" MaxLength="20" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="NOOFTCODES" Type="Edm.String" Nullable="false" MaxLength="20" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ACTION" Type="Edm.String" Nullable="false" MaxLength="2" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ACTIONDESC" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="COMMENTS" Type="Edm.String" Nullable="false" MaxLength="255" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="INDIRECT" Type="Edm.String" Nullable="false" MaxLength="1" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="SC_ICON" Type="Edm.String" Nullable="false" MaxLength="70" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+            </EntityType>
+            <EntityType Name="RNOW_ODATA" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="MANDT"/>
+                </Key>
+                <Property Name="MANDT" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="RFCDEST" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+            </EntityType>
+            <EntityType Name="RNOW_ODATA_SERVICE" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="MANDT"/>
+                    <PropertyRef Name="RFCDEST"/>
+                    <PropertyRef Name="BNAME"/>
+                    <PropertyRef Name="JOBCOUNT"/>
+                    <PropertyRef Name="JOBNAME"/>
+                </Key>
+                <Property Name="MANDT" Type="Edm.String" Nullable="false" sap:unicode="false"/>
+                <Property Name="RFCDEST" Type="Edm.String" Nullable="false" sap:unicode="false" sap:filterable="false"/>
+                <Property Name="BNAME" Type="Edm.String" Nullable="false" sap:unicode="false"/>
+                <Property Name="JOBCOUNT" Type="Edm.String" Nullable="false" sap:unicode="false"/>
+                <Property Name="JOBNAME" Type="Edm.String" Nullable="false" sap:unicode="false"/>
+                <Property Name="GLTGV" Type="Edm.String" sap:unicode="false"/>
+                <Property Name="GLTGB" Type="Edm.String" sap:unicode="false"/>
+                <Property Name="USTYP" Type="Edm.String" sap:unicode="false"/>
+                <Property Name="CLASS" Type="Edm.String" sap:unicode="false"/>
+                <Property Name="UFLAG" Type="Edm.String" sap:unicode="false"/>
+                <Property Name="ERDAT" Type="Edm.String" sap:unicode="false"/>
+                <Property Name="TRDAT" Type="Edm.String" sap:unicode="false"/>
+                <Property Name="LTIME" Type="Edm.String" sap:unicode="false"/>
+                <Property Name="NAME_FIRST" Type="Edm.String" sap:unicode="false"/>
+                <Property Name="NAME_LAST" Type="Edm.String" sap:unicode="false"/>
+                <Property Name="NAME_TEXT" Type="Edm.String" sap:unicode="false"/>
+                <Property Name="SMTP_ADDR" Type="Edm.String" sap:unicode="false"/>
+                <Property Name="TEL_NUMBER" Type="Edm.String" sap:unicode="false"/>
+                <Property Name="PERSNUMBER" Type="Edm.String" sap:unicode="false"/>
+                <Property Name="ADDRNUMBER" Type="Edm.String" sap:unicode="false"/>
+                <Property Name="DEL" Type="Edm.String" sap:unicode="false"/>
+                <Property Name="MIG" Type="Edm.String" sap:unicode="false"/>
+            </EntityType>
+            <EntityType Name="RNOW_INPROGRESS" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="CONNECTOR"/>
+                    <PropertyRef Name="EUSER"/>
+                    <PropertyRef Name="JOB_ID"/>
+                </Key>
+                <Property Name="CONNECTOR" Type="Edm.String" Nullable="false" sap:unicode="false" sap:label="Logical destination (specified in function call)"/>
+                <Property Name="EUSER" Type="Edm.String" Nullable="false" sap:unicode="false" sap:label="User Name"/>
+                <Property Name="JOB_ID" Type="Edm.String" Nullable="false" sap:unicode="false" sap:label="Job ID"/>
+                <Property Name="REVCYCLENAME" Type="Edm.String" sap:unicode="false" sap:label="Background Job Name"/>
+                <Property Name="JobName" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ATT_FISCAL" Type="Edm.String" sap:unicode="false" sap:label="Fiscal year"/>
+                <Property Name="ATT_QUARTERLY" Type="Edm.String" sap:unicode="false" sap:label="Fiscal Quarterly"/>
+                <Property Name="FIRSTNAME" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="LASTNAME" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="STATUS" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="RoleManager" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="SodReview" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ParamVal3008" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="UserLockStatus" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="RCount" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="PCount" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="UserGroup" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="RoleOwner" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="LicCat" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ValidFrom" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ValidTo" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="LockStatus" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Role" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="LastLogon" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="REVIEW_TYPE" Type="Edm.String" sap:unicode="false" sap:label="Review type"/>
+            </EntityType>
+            <EntityType Name="RNOW_ReviewDetail" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="JobId"/>
+                    <PropertyRef Name="Connector"/>
+                    <PropertyRef Name="EUser"/>
+                    <PropertyRef Name="Role"/>
+                </Key>
+                <Property Name="JobId" Type="Edm.String" Nullable="false" sap:unicode="false"/>
+                <Property Name="Connector" Type="Edm.String" Nullable="false" sap:unicode="false"/>
+                <Property Name="EUser" Type="Edm.String" Nullable="false" sap:unicode="false"/>
+                <Property Name="Role" Type="Edm.String" Nullable="false" sap:unicode="false"/>
+                <Property Name="FullName" Type="Edm.String" sap:unicode="false"/>
+                <Property Name="RpType" Type="Edm.String" sap:unicode="false"/>
+                <Property Name="RpType1" Type="Edm.String" sap:unicode="false"/>
+                <Property Name="FromDate" Type="Edm.String" sap:unicode="false"/>
+                <Property Name="ToDate" Type="Edm.String" sap:unicode="false"/>
+                <Property Name="Action" Type="Edm.String" sap:unicode="false"/>
+                <Property Name="ActionDesc" Type="Edm.String" sap:unicode="false"/>
+                <Property Name="Comment" Type="Edm.String" sap:unicode="false"/>
+                <Property Name="UtilizedCount" Type="Edm.String" sap:unicode="false"/>
+                <Property Name="RoleDesc" Type="Edm.String" sap:unicode="false"/>
+                <Property Name="NoOfTcodes" Type="Edm.String" sap:unicode="false"/>
+                <Property Name="UtilizationText" Type="Edm.String" sap:unicode="false"/>
+                <Property Name="RoleManager" Type="Edm.String" sap:unicode="false"/>
+                <Property Name="LicCat" Type="Edm.String" sap:unicode="false"/>
+            </EntityType>
+            <EntityType Name="save" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="LOGINUSER"/>
+                    <PropertyRef Name="JobId"/>
+                    <PropertyRef Name="Connector"/>
+                    <PropertyRef Name="EUser"/>
+                </Key>
+                <Property Name="LOGINUSER" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="JobId" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Connector" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="EUser" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Status" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="FullName" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Role" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="RoleDesc" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="LicCat" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="FromDate" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ToDate" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="UtilizationText" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="COMMENT" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+            </EntityType>
+            <EntityType Name="utilized_Tcodes" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="LOGINUSER"/>
+                    <PropertyRef Name="CONNECTOR"/>
+                    <PropertyRef Name="JOB_ID"/>
+                    <PropertyRef Name="EUSER"/>
+                    <PropertyRef Name="Rfcdest"/>
+                    <PropertyRef Name="Bname"/>
+                    <PropertyRef Name="JobId"/>
+                    <PropertyRef Name="AgrName"/>
+                    <PropertyRef Name="Tcode"/>
+                </Key>
+                <Property Name="LOGINUSER" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="CONNECTOR" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="JOB_ID" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="EUSER" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Rfcdest" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Bname" Type="Edm.String" Nullable="false" MaxLength="12" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="JobId" Type="Edm.String" Nullable="false" MaxLength="20" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="AgrName" Type="Edm.String" Nullable="false" MaxLength="30" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Tcode" Type="Edm.String" Nullable="false" MaxLength="40" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="AgrDesc" Type="Edm.String" Nullable="false" MaxLength="80" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="TcodeDesc" Type="Edm.String" Nullable="false" MaxLength="36" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="LastTused" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="CriticalTcode" Type="Edm.String" Nullable="false" MaxLength="15" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="LastUsedon" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="tccount" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="LicCat" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="comments" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Action" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+            </EntityType>
+            <EntityType Name="RNOW_CLOSED" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="CONNECTOR"/>
+                    <PropertyRef Name="EUSER"/>
+                    <PropertyRef Name="JOB_ID"/>
+                </Key>
+                <Property Name="CONNECTOR" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="EUSER" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="JOB_ID" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="REVCYCLENAME" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ATT_FISCAL" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ATT_QUARTERLY" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="REVIEW_TYPE" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="FIRSTNAME" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="LASTNAME" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="USERGROUP" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ROLEMANAGER" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ROLEOWNER" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="LIC_CAT" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="VALID_FROM" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="VALID_TO" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="LAST_LOGON" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="LOCKSTATUS" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="STATUS" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="USERLOCKSTATUS" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="R_COUNT" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="P_COUNT" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="PARAMVAL3008" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="SOD_REVIEW" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+            </EntityType>
+            <EntityType Name="Review_screen" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="LOGINUSER"/>
+                    <PropertyRef Name="Connector"/>
+                    <PropertyRef Name="JobId"/>
+                    <PropertyRef Name="EUser"/>
+                </Key>
+                <Property Name="LOGINUSER" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Connector" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="JobId" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="EUser" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="FullName" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Role" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="RoleDesc" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="LicCat" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="FromDate" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ToDate" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="UtilizationText" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="COMMENT" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Action" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <NavigationProperty Name="TCODEITEMNAV" Relationship="TNOW.RNOW_ODATA_SERVICES_SRV.REVIEW_SCREEN_TO_UTILIZED_TCODES" FromRole="FromRole_REVIEW_SCREEN_TO_UTILIZED_TCODES" ToRole="ToRole_REVIEW_SCREEN_TO_UTILIZED_TCODES"/>
+            </EntityType>
+            <EntityType Name="Review_screen1" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="JobId"/>
+                    <PropertyRef Name="Connector"/>
+                    <PropertyRef Name="EUser"/>
+                </Key>
+                <Property Name="JobId" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Connector" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="EUser" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="AgrName" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="TcodeDesc" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="LicCat" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="LastTused" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="CriticalTcode" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Tcode" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Action" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+            </EntityType>
+            <Association Name="REVIEW_SCREEN_TO_UTILIZED_TCODES" sap:content-version="1">
+                <End Type="TNOW.RNOW_ODATA_SERVICES_SRV.Review_screen" Multiplicity="1" Role="FromRole_REVIEW_SCREEN_TO_UTILIZED_TCODES"/>
+                <End Type="TNOW.RNOW_ODATA_SERVICES_SRV.utilized_Tcodes" Multiplicity="*" Role="ToRole_REVIEW_SCREEN_TO_UTILIZED_TCODES"/>
+                <ReferentialConstraint>
+                    <Principal Role="FromRole_REVIEW_SCREEN_TO_UTILIZED_TCODES">
+                        <PropertyRef Name="LOGINUSER"/>
+                        <PropertyRef Name="EUser"/>
+                        <PropertyRef Name="JobId"/>
+                        <PropertyRef Name="Connector"/>
+                    </Principal>
+                    <Dependent Role="ToRole_REVIEW_SCREEN_TO_UTILIZED_TCODES">
+                        <PropertyRef Name="LOGINUSER"/>
+                        <PropertyRef Name="EUSER"/>
+                        <PropertyRef Name="JobId"/>
+                        <PropertyRef Name="CONNECTOR"/>
+                    </Dependent>
+                </ReferentialConstraint>
+            </Association>
+            <Association Name="RNOW_NEW_TO_SAVE" sap:content-version="1">
+                <End Type="TNOW.RNOW_ODATA_SERVICES_SRV.RNOW_NEW" Multiplicity="1" Role="FromRole_RNOW_NEW_TO_SAVE"/>
+                <End Type="TNOW.RNOW_ODATA_SERVICES_SRV.save" Multiplicity="*" Role="ToRole_RNOW_NEW_TO_SAVE"/>
+                <ReferentialConstraint>
+                    <Principal Role="FromRole_RNOW_NEW_TO_SAVE">
+                        <PropertyRef Name="LoginUser"/>
+                        <PropertyRef Name="JOB_ID"/>
+                        <PropertyRef Name="EUSER"/>
+                        <PropertyRef Name="CONNECTOR"/>
+                    </Principal>
+                    <Dependent Role="ToRole_RNOW_NEW_TO_SAVE">
+                        <PropertyRef Name="LOGINUSER"/>
+                        <PropertyRef Name="JobId"/>
+                        <PropertyRef Name="EUser"/>
+                        <PropertyRef Name="Connector"/>
+                    </Dependent>
+                </ReferentialConstraint>
+            </Association>
+            <Association Name="RNOW_NEW_TO_REVIEWSCREEN" sap:content-version="1">
+                <End Type="TNOW.RNOW_ODATA_SERVICES_SRV.RNOW_NEW" Multiplicity="1" Role="FromRole_RNOW_NEW_TO_REVIEWSCREEN"/>
+                <End Type="TNOW.RNOW_ODATA_SERVICES_SRV.Review_screen" Multiplicity="*" Role="ToRole_RNOW_NEW_TO_REVIEWSCREEN"/>
+                <ReferentialConstraint>
+                    <Principal Role="FromRole_RNOW_NEW_TO_REVIEWSCREEN">
+                        <PropertyRef Name="LoginUser"/>
+                        <PropertyRef Name="JOB_ID"/>
+                        <PropertyRef Name="EUSER"/>
+                        <PropertyRef Name="CONNECTOR"/>
+                    </Principal>
+                    <Dependent Role="ToRole_RNOW_NEW_TO_REVIEWSCREEN">
+                        <PropertyRef Name="LOGINUSER"/>
+                        <PropertyRef Name="JobId"/>
+                        <PropertyRef Name="EUser"/>
+                        <PropertyRef Name="Connector"/>
+                    </Dependent>
+                </ReferentialConstraint>
+            </Association>
+            <EntityContainer Name="TNOW_RNOW_ODATA_SERVICES_SRV_Entities" m:IsDefaultEntityContainer="true" sap:supported-formats="atom json xlsx">
+                <EntitySet Name="SubscriptionCollection" EntityType="TNOW.RNOW_ODATA_SERVICES_SRV.Subscription" sap:content-version="1"/>
+                <EntitySet Name="NotificationCollection" EntityType="TNOW.RNOW_ODATA_SERVICES_SRV.Notification" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:addressable="false" sap:content-version="1"/>
+                <EntitySet Name="RNOW_NEWSet" EntityType="TNOW.RNOW_ODATA_SERVICES_SRV.RNOW_NEW" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:addressable="false" sap:content-version="1"/>
+                <EntitySet Name="RNOW_Approval_ReviewSet" EntityType="TNOW.RNOW_ODATA_SERVICES_SRV.RNOW_Approval_Review" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:addressable="false" sap:content-version="1"/>
+                <EntitySet Name="RNOW_Approval_TerminateSet" EntityType="TNOW.RNOW_ODATA_SERVICES_SRV.RNOW_Approval_Terminate" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:addressable="false" sap:content-version="1"/>
+                <EntitySet Name="RNOW_Approval_ReassignSet" EntityType="TNOW.RNOW_ODATA_SERVICES_SRV.RNOW_Approval_Reassign" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:addressable="false" sap:content-version="1"/>
+                <EntitySet Name="RNOW_Approval_LockSet" EntityType="TNOW.RNOW_ODATA_SERVICES_SRV.RNOW_Approval_Lock" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:addressable="false" sap:content-version="1"/>
+                <EntitySet Name="SubmitSet" EntityType="TNOW.RNOW_ODATA_SERVICES_SRV.Submit" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:addressable="false" sap:content-version="1"/>
+                <EntitySet Name="Closed_displaySet" EntityType="TNOW.RNOW_ODATA_SERVICES_SRV.Closed_display" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:addressable="false" sap:content-version="1"/>
+                <EntitySet Name="RNOW_ODATASet" EntityType="TNOW.RNOW_ODATA_SERVICES_SRV.RNOW_ODATA" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:addressable="false" sap:content-version="1"/>
+                <EntitySet Name="RNOW_ODATA_SERVICESet" EntityType="TNOW.RNOW_ODATA_SERVICES_SRV.RNOW_ODATA_SERVICE" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:addressable="false" sap:content-version="1"/>
+                <EntitySet Name="RNOW_INPROGRESSSet" EntityType="TNOW.RNOW_ODATA_SERVICES_SRV.RNOW_INPROGRESS" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:addressable="false" sap:content-version="1"/>
+                <EntitySet Name="RNOW_ReviewDetailSet" EntityType="TNOW.RNOW_ODATA_SERVICES_SRV.RNOW_ReviewDetail" sap:searchable="true" sap:requires-filter="true" sap:content-version="1"/>
+                <EntitySet Name="saveSet" EntityType="TNOW.RNOW_ODATA_SERVICES_SRV.save" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:addressable="false" sap:content-version="1"/>
+                <EntitySet Name="utilized_TcodesSet" EntityType="TNOW.RNOW_ODATA_SERVICES_SRV.utilized_Tcodes" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:addressable="false" sap:content-version="1"/>
+                <EntitySet Name="RNOW_CLOSEDSet" EntityType="TNOW.RNOW_ODATA_SERVICES_SRV.RNOW_CLOSED" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:addressable="false" sap:content-version="1"/>
+                <EntitySet Name="Review_screenSet" EntityType="TNOW.RNOW_ODATA_SERVICES_SRV.Review_screen" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:addressable="false" sap:content-version="1"/>
+                <EntitySet Name="Review_screen1Set" EntityType="TNOW.RNOW_ODATA_SERVICES_SRV.Review_screen1" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:addressable="false" sap:content-version="1"/>
+                <AssociationSet Name="REVIEW_SCREEN_TO_UTILIZED_TCODESSet" Association="TNOW.RNOW_ODATA_SERVICES_SRV.REVIEW_SCREEN_TO_UTILIZED_TCODES" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="Review_screenSet" Role="FromRole_REVIEW_SCREEN_TO_UTILIZED_TCODES"/>
+                    <End EntitySet="utilized_TcodesSet" Role="ToRole_REVIEW_SCREEN_TO_UTILIZED_TCODES"/>
+                </AssociationSet>
+                <AssociationSet Name="RNOW_NEW_TO_REVIEWSCREENSet" Association="TNOW.RNOW_ODATA_SERVICES_SRV.RNOW_NEW_TO_REVIEWSCREEN" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="RNOW_NEWSet" Role="FromRole_RNOW_NEW_TO_REVIEWSCREEN"/>
+                    <End EntitySet="Review_screenSet" Role="ToRole_RNOW_NEW_TO_REVIEWSCREEN"/>
+                </AssociationSet>
+                <AssociationSet Name="RNOW_NEW_TO_SAVESet" Association="TNOW.RNOW_ODATA_SERVICES_SRV.RNOW_NEW_TO_SAVE" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="RNOW_NEWSet" Role="FromRole_RNOW_NEW_TO_SAVE"/>
+                    <End EntitySet="saveSet" Role="ToRole_RNOW_NEW_TO_SAVE"/>
+                </AssociationSet>
+                <FunctionImport Name="SubmitReview" ReturnType="TNOW.RNOW_ODATA_SERVICES_SRV.RNOW_ReviewDetail" EntitySet="RNOW_ReviewDetailSet" m:HttpMethod="POST" sap:action-for="TNOW.RNOW_ODATA_SERVICES_SRV.RNOW_ReviewDetail">
+                    <Parameter Name="Comments" Type="Edm.String" Mode="In"/>
+                    <Parameter Name="RoleManager" Type="Edm.String" Mode="In"/>
+                    <Parameter Name="ReviewLevel" Type="Edm.String" Mode="In"/>
+                    <Parameter Name="EUser" Type="Edm.String" Mode="In"/>
+                    <Parameter Name="Connector" Type="Edm.String" Mode="In"/>
+                    <Parameter Name="JobId" Type="Edm.String" Mode="In"/>
+                </FunctionImport>
+            </EntityContainer>
+            <atom:link rel="self" href="http://tghs4pas.tnow.com:50100/sap/opu/odata/tnow/RNOW_ODATA_SERVICES_SRV/$metadata" xmlns:atom="http://www.w3.org/2005/Atom"/>
+            <atom:link rel="latest-version" href="http://tghs4pas.tnow.com:50100/sap/opu/odata/tnow/RNOW_ODATA_SERVICES_SRV/$metadata" xmlns:atom="http://www.w3.org/2005/Atom"/>
+        </Schema>
+    </edmx:DataServices>
+</edmx:Edmx>

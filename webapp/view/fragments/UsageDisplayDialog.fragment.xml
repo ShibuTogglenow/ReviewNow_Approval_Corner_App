@@ -1,0 +1,109 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core"
+	xmlns:uiTable="sap.ui.table">
+	<Dialog
+        id="usageDialog"
+		icon="sap-icon://menu2"
+        title="{usage>/title}"
+        contentWidth="100%"
+    	contentHeight="700px"
+        resizable="true"
+        draggable="true">
+		<content>
+		<VBox
+			fitContainer="true"
+			height="100%">
+
+			<uiTable:Table
+                id="usageDisplayTable"
+                rows="{usage>/Items}"
+				width="100%"
+                selectionMode="None"
+                enableBusyIndicator="true"
+                enableColumnReordering="true"
+				visibleRowCountMode="Auto" 
+				minAutoRowCount="15">
+				
+				<uiTable:columns>
+					<uiTable:Column
+                        width="170px"
+                        sortProperty="Tcode"
+                        filterProperty="Tcode">
+						<Label text="{i18n>labelTcode}"/>
+						<uiTable:template>
+							<Text text="{usage>Tcode}"/>
+						</uiTable:template>
+					</uiTable:Column>
+					<uiTable:Column
+                        width="20rem"
+                        sortProperty="TcodeDesc"
+                        filterProperty="TcodeDesc">
+						<Label text="{i18n>labelDescription}"/>
+						<uiTable:template>
+							<Text text="{usage>TcodeDesc}"/>
+						</uiTable:template>
+					</uiTable:Column>
+					<uiTable:Column
+                        width="90px"
+                        sortProperty="tccount"
+                        filterProperty="tccount"
+                        hAlign="Center">
+						<Label text="{i18n>labelUsage}"/>
+						<uiTable:template>
+							<Text text="{usage>tccount}"/>
+						</uiTable:template>
+					</uiTable:Column>
+					<uiTable:Column
+                        width="120px"
+                        sortProperty="LastTused"
+                        filterProperty="LastTused">
+						<Label text="{i18n>labelLastUsed}"/>
+						<uiTable:template>
+							<Text text="{usage>LastTused}"/>
+						</uiTable:template>
+					</uiTable:Column>
+					<uiTable:Column
+                        width="100px"
+                        sortProperty="CriticalTcode"
+                        filterProperty="CriticalTcode"
+                        hAlign="Center">
+						<Label text="{i18n>labelIsCritical}"/>
+						<uiTable:template>
+							<Text
+                                text="{usage>CriticalTcode}"/>
+						</uiTable:template>
+					</uiTable:Column>
+					<uiTable:Column
+                        width="180px"
+                        sortProperty="LicCat"
+                        filterProperty="LicCat">
+						<Label text="{i18n>labelLicensingCategory}"/>
+						<uiTable:template>
+							<Text text="{usage>LicCat}"/>
+						</uiTable:template>
+					</uiTable:Column>
+					<uiTable:Column width="150px">
+						<Label text="{i18n>labelAction}"/>
+						<uiTable:template>
+							 <Text text="{usage>Action}" />
+						</uiTable:template>
+					</uiTable:Column>
+					<uiTable:Column width="auto">
+						<Label text="{i18n>labelComment}"/>
+						<uiTable:template>
+							 <Text text="{usage>comments}" />
+						</uiTable:template>
+					</uiTable:Column>
+				</uiTable:columns>
+			</uiTable:Table>
+		</VBox>	
+		</content>
+		<buttons>
+			<Button
+				text="{i18n>btnCancel}"
+				icon="sap-icon://decline"
+				press="onUsageDialogClose"/>
+		</buttons>
+	</Dialog>
+</core:FragmentDefinition>

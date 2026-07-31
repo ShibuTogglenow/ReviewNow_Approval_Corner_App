@@ -1,0 +1,25 @@
+# yaml-language-server: $schema=https://sap.github.io/ui5-tooling/schema/ui5.yaml.json
+
+specVersion: "3.1"
+metadata:
+  name: rnow.approval.corner
+type: application
+builder:
+  resources:
+    excludes:
+      - /test/**
+      - /localService/**
+  customTasks:
+    - name: deploy-to-abap
+      afterTask: generateCachebusterInfo
+      configuration:
+        target:
+          url: http://tghs4pas.tnow.com:50100
+          client: '100'
+        app:
+          name: /TNOW/RNOW_APROVL_C1
+          description: ReviewNow Approval Corner Fiori App
+          package: /TNOW/V3_UAR
+          transport: TSDK903111
+        exclude:
+          - /test/

@@ -1,0 +1,348 @@
+<mvc:View
+    controllerName="rnow.approval.corner.controller.Main"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:uiTable="sap.ui.table">
+
+    <Page id="mainPage" showHeader="false" enableScrolling="true">
+        <content>
+
+            <VBox class="sapUiSmallMarginBottom">
+                <HBox
+                    justifyContent="SpaceBetween"
+                    alignItems="Center"
+                    width="100%"
+                    class="headerRow">
+                    <VBox>
+                        <Image
+                            src="{appUser>/logo}"
+                            height="2.75rem"
+                            densityAware="false"
+                            class="reviewNowLogo"/>
+                        <Title
+                            text="{main>/pageTitle}"
+                            level="H3"/>
+                    </VBox>
+                </HBox>
+            </VBox>
+
+            <IconTabBar
+                select="onTabSelect"
+                selectedKey="{main>/selectedKey}">
+                <items>
+
+                    <!-- ==================== New ==================== -->
+                    <IconTabFilter
+                        key="New"
+                        text="{= ${i18n>tabNew} + ' (' + (${main>/NewCount} || 0) + ')' }">
+
+                        <uiTable:Table
+                            id="newTable"
+                            rows="{main>/New}"
+                            selectionMode="MultiToggle"
+                            rowSelectionChange="onRowSelectionChange"
+                            alternateRowColors="true"
+                            enableBusyIndicator="true"
+                            enableColumnReordering="true"
+                            visibleRowCountMode="Auto"
+                            minAutoRowCount="15">
+
+                            <uiTable:extension>
+                                <OverflowToolbar>
+                                    <Title text="{i18n>mainApprovalItems}" level="H5"/>
+                                    <ToolbarSpacer/>
+                                    <Button
+                                        icon="sap-icon://show"
+                                        text="{i18n>btnReview}"
+                                        type="Transparent"
+                                        press="onReview"/>
+                                    <Button
+                                        icon="sap-icon://refresh"
+                                        text="{i18n>btnRefresh}"
+                                        type="Transparent"
+                                        press="onNewRefresh"/>
+                                    <Button
+                                        id="btnFilter"
+                                        icon="sap-icon://filter"
+                                        text="{i18n>btnFilter}"
+                                        type="Transparent"
+                                        press="onToggleFilter"/>
+                                    <SearchField
+                                        id="searchFilterNew"
+                                        width="15rem"
+                                        visible="false"
+                                        placeholder="{i18n>searchPlaceholder}"
+                                        search="onSearch"
+                                        liveChange="onSearch"/>
+                                    <Button
+                                        icon="sap-icon://add-employee"
+                                        text="{i18n>btnReassign}"
+                                        type="Transparent"
+                                        press="onReassign"/>
+                                </OverflowToolbar>
+                            </uiTable:extension>
+
+                            <uiTable:columns>
+                                <uiTable:Column hAlign="Center" filterProperty="CONNECTOR">
+                                    <Label text="{i18n>colConnector}"/>
+                                    <uiTable:template>
+                                        <Text text="{main>CONNECTOR}"/>
+                                    </uiTable:template>
+                                </uiTable:Column>
+                                <uiTable:Column hAlign="Center" filterProperty="JOB_ID">
+                                    <Label text="{i18n>colJobId}"/>
+                                    <uiTable:template>
+                                        <Text text="{main>JOB_ID}"/>
+                                    </uiTable:template>
+                                </uiTable:Column>
+                                <uiTable:Column hAlign="Center" sortProperty="EUSER" filterProperty="EUSER">
+                                    <Label text="{i18n>colUserName}"/>
+                                    <uiTable:template>
+                                        <Text text="{main>EUSER}"/>
+                                    </uiTable:template>
+                                </uiTable:Column>
+                                <uiTable:Column hAlign="Center" width="24rem" filterProperty="REVCYCLENAME">
+                                    <Label text="{i18n>colJobName}"/>
+                                    <uiTable:template>
+                                        <Text text="{main>REVCYCLENAME}"/>
+                                    </uiTable:template>
+                                </uiTable:Column>
+                                <uiTable:Column hAlign="Center" filterProperty="ATT_FISCAL">
+                                    <Label text="{i18n>colFiscalYear}"/>
+                                    <uiTable:template>
+                                        <Text text="{main>ATT_FISCAL}"/>
+                                    </uiTable:template>
+                                </uiTable:Column>
+                                <uiTable:Column hAlign="Center" filterProperty="ATT_QUARTERLY">
+                                    <Label text="{i18n>colFiscalQuarter}"/>
+                                    <uiTable:template>
+                                        <Text text="{main>ATT_QUARTERLY}"/>
+                                    </uiTable:template>
+                                </uiTable:Column>
+                                <uiTable:Column hAlign="Center" filterProperty="REVIEW_TYPE">
+                                    <Label text="{i18n>colReviewType}"/>
+                                    <uiTable:template>
+                                        <Text text="{main>REVIEW_TYPE}"/>
+                                    </uiTable:template>
+                                </uiTable:Column>
+                                <uiTable:Column hAlign="Center" filterProperty="RCount">
+                                    <Label text="{i18n>colNoOfRoles}"/>
+                                    <uiTable:template>
+                                        <Text text="{main>RCount}"/>
+                                    </uiTable:template>
+                                </uiTable:Column>
+                            </uiTable:columns>
+
+                        </uiTable:Table>
+                    </IconTabFilter>
+
+                    <!-- ==================== In Progress ==================== -->
+                    <IconTabFilter
+                        key="InProgress"
+                        text="{= ${i18n>tabInProgress} + ' (' + (${main>/InProgressCount} || 0) + ')' }">
+
+                        <uiTable:Table
+                            id="inProgressTable"
+                            rows="{main>/InProgress}"
+                            selectionMode="MultiToggle"
+                            rowSelectionChange="onRowSelectionChange"
+                            alternateRowColors="true"
+                            enableBusyIndicator="true"
+                            enableColumnReordering="true"
+                            visibleRowCountMode="Auto"
+                            minAutoRowCount="15">
+
+                            <uiTable:extension>
+                                <OverflowToolbar>
+                                    <Title text="{i18n>mainInProgressItems}" level="H5"/>
+                                    <ToolbarSpacer/>
+                                    <Button
+                                        icon="sap-icon://show"
+                                        text="{i18n>btnReview}"
+                                        type="Transparent"
+                                        press="onReview"/>
+                                    <Button
+                                        icon="sap-icon://refresh"
+                                        text="{i18n>btnRefresh}"
+                                        type="Transparent"
+                                        press="onInProgressRefresh"/>
+                                    <Button
+                                        id="btnFilterInProgress"
+                                        icon="sap-icon://filter"
+                                        text="{i18n>btnFilter}"
+                                        type="Transparent"
+                                        press="onToggleFilter"/>
+                                    <SearchField
+                                        id="searchFilterInProgress"
+                                        width="15rem"
+                                        visible="false"
+                                        placeholder="{i18n>searchPlaceholder}"
+                                        search="onSearch"
+                                        liveChange="onSearch"/>
+                                    <Button
+                                        icon="sap-icon://add-employee"
+                                        text="{i18n>btnReassign}"
+                                        type="Transparent"
+                                        press="onReassign"/>
+                                </OverflowToolbar>
+                            </uiTable:extension>
+
+                            <uiTable:columns>
+                                <uiTable:Column hAlign="Center" filterProperty="CONNECTOR">
+                                    <Label text="{i18n>colConnector}"/>
+                                    <uiTable:template>
+                                        <Text text="{main>CONNECTOR}"/>
+                                    </uiTable:template>
+                                </uiTable:Column>
+                                <uiTable:Column hAlign="Center" filterProperty="JOB_ID">
+                                    <Label text="{i18n>colJobId}"/>
+                                    <uiTable:template>
+                                        <Text text="{main>JOB_ID}"/>
+                                    </uiTable:template>
+                                </uiTable:Column>
+                                <uiTable:Column hAlign="Center" sortProperty="EUSER" filterProperty="EUSER">
+                                    <Label text="{i18n>colUserName}"/>
+                                    <uiTable:template>
+                                        <Text text="{main>EUSER}"/>
+                                    </uiTable:template>
+                                </uiTable:Column>
+                                <uiTable:Column hAlign="Center" width="24rem" filterProperty="REVCYCLENAME">
+                                    <Label text="{i18n>colJobName}"/>
+                                    <uiTable:template>
+                                        <Text text="{main>REVCYCLENAME}"/>
+                                    </uiTable:template>
+                                </uiTable:Column>
+                                <uiTable:Column hAlign="Center" filterProperty="ATT_FISCAL">
+                                    <Label text="{i18n>colFiscalYear}"/>
+                                    <uiTable:template>
+                                        <Text text="{main>ATT_FISCAL}"/>
+                                    </uiTable:template>
+                                </uiTable:Column>
+                                <uiTable:Column hAlign="Center" filterProperty="ATT_QUARTERLY">
+                                    <Label text="{i18n>colFiscalQuarter}"/>
+                                    <uiTable:template>
+                                        <Text text="{main>ATT_QUARTERLY}"/>
+                                    </uiTable:template>
+                                </uiTable:Column>
+                                <uiTable:Column hAlign="Center" filterProperty="REVIEW_TYPE">
+                                    <Label text="{i18n>colReviewType}"/>
+                                    <uiTable:template>
+                                        <Text text="{main>REVIEW_TYPE}"/>
+                                    </uiTable:template>
+                                </uiTable:Column>
+                                <uiTable:Column hAlign="Center" filterProperty="RCount">
+                                    <Label text="{i18n>colNoOfRoles}"/>
+                                    <uiTable:template>
+                                        <Text text="{main>RCount}"/>
+                                    </uiTable:template>
+                                </uiTable:Column>
+                            </uiTable:columns>
+
+                        </uiTable:Table>
+                    </IconTabFilter>
+
+                    <!-- ==================== Closed ==================== -->
+                    <IconTabFilter
+                        key="Closed"
+                        text="{= ${i18n>tabClosed} + ' (' + (${main>/ClosedCount} || 0) + ')' }">
+
+                        <uiTable:Table
+                            id="closedTable"
+                            rows="{main>/Closed}"
+                            selectionMode="MultiToggle"
+                            rowSelectionChange="onRowSelectionChange"
+                            alternateRowColors="true"
+                            enableBusyIndicator="true"
+                            enableColumnReordering="true"
+                            visibleRowCountMode="Auto"
+                            minAutoRowCount="15">
+
+                            <uiTable:extension>
+                                <OverflowToolbar>
+                                    <Title text="{i18n>mainClosedItems}" level="H5"/>
+                                    <ToolbarSpacer/>
+                                    <Button
+                                        icon="sap-icon://refresh"
+                                        text="{i18n>btnRefresh}"
+                                        type="Transparent"
+                                        press="onClosedRefresh"/>
+                                    <Button
+                                        id="btnFilterClosed"
+                                        icon="sap-icon://filter"
+                                        text="{i18n>btnFilter}"
+                                        type="Transparent"
+                                        press="onToggleFilter"/>
+                                    <SearchField
+                                        id="searchFilterClosed"
+                                        width="15rem"
+                                        visible="false"
+                                        placeholder="{i18n>searchPlaceholder}"
+                                        search="onSearch"
+                                        liveChange="onSearch"/>
+                                    <Button
+                                        icon="sap-icon://show"
+                                        text="{i18n>mainDisplay}"
+                                        type="Transparent"
+                                        press="onDisplayReview"/>
+                                </OverflowToolbar>
+                            </uiTable:extension>
+
+                            <uiTable:columns>
+                                <uiTable:Column hAlign="Center" filterProperty="CONNECTOR">
+                                    <Label text="{i18n>colConnector}"/>
+                                    <uiTable:template>
+                                        <Text text="{main>CONNECTOR}"/>
+                                    </uiTable:template>
+                                </uiTable:Column>
+                                <uiTable:Column hAlign="Center" filterProperty="JOB_ID">
+                                    <Label text="{i18n>colJobId}"/>
+                                    <uiTable:template>
+                                        <Text text="{main>JOB_ID}"/>
+                                    </uiTable:template>
+                                </uiTable:Column>
+                                <uiTable:Column hAlign="Center" sortProperty="EUSER" filterProperty="EUSER">
+                                    <Label text="{i18n>colUserName}"/>
+                                    <uiTable:template>
+                                        <Text text="{main>EUSER}"/>
+                                    </uiTable:template>
+                                </uiTable:Column>
+                                <uiTable:Column hAlign="Center" width="24rem" filterProperty="REVCYCLENAME">
+                                    <Label text="{i18n>colJobName}"/>
+                                    <uiTable:template>
+                                        <Text text="{main>REVCYCLENAME}"/>
+                                    </uiTable:template>
+                                </uiTable:Column>
+                                <uiTable:Column hAlign="Center" filterProperty="ATT_FISCAL">
+                                    <Label text="{i18n>colFiscalYear}"/>
+                                    <uiTable:template>
+                                        <Text text="{main>ATT_FISCAL}"/>
+                                    </uiTable:template>
+                                </uiTable:Column>
+                                <uiTable:Column hAlign="Center" filterProperty="ATT_QUARTERLY">
+                                    <Label text="{i18n>colFiscalQuarter}"/>
+                                    <uiTable:template>
+                                        <Text text="{main>ATT_QUARTERLY}"/>
+                                    </uiTable:template>
+                                </uiTable:Column>
+                                <uiTable:Column hAlign="Center" filterProperty="REVIEW_TYPE">
+                                    <Label text="{i18n>colReviewType}"/>
+                                    <uiTable:template>
+                                        <Text text="{main>REVIEW_TYPE}"/>
+                                    </uiTable:template>
+                                </uiTable:Column>
+                                <uiTable:Column hAlign="Center" filterProperty="RCount">
+                                    <Label text="{i18n>colNoOfRoles}"/>
+                                    <uiTable:template>
+                                        <Text text="{main>RCount}"/>
+                                    </uiTable:template>
+                                </uiTable:Column>
+                            </uiTable:columns>
+
+                        </uiTable:Table>
+                    </IconTabFilter>
+
+                </items>
+            </IconTabBar>
+        </content>
+    </Page>
+</mvc:View>

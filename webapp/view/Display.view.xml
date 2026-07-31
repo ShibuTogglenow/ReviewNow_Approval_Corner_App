@@ -1,0 +1,136 @@
+<mvc:View
+    controllerName="rnow.approval.corner.controller.Display"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns="sap.m"
+	xmlns:uiTable="sap.ui.table"
+	xmlns:core="sap.ui.core">
+	<Page id="displayPage" showHeader="false" enableScrolling="false">
+		<content>
+			<VBox class="sapUiSmallMarginBottom">
+				<HBox
+					justifyContent="SpaceBetween"
+					alignItems="Center"
+					width="100%"
+					class="headerRow">
+					<HBox alignItems="Center">
+						<Button
+							icon="sap-icon://nav-back"
+							type="Transparent"
+							press="onNavBack"/>
+						<VBox class="sapUiSmallMarginBegin">
+							<Image
+								src="{appUser>/logo}"
+								height="2.75rem"
+								densityAware="false"
+								class="DisplayNowLogo"/>
+							<Title
+								text="{Display>/pageTitle}"
+								level="H3"/>
+						</VBox>
+					</HBox>
+				</HBox>
+			</VBox>
+			<!-- Toolbar -->
+			<OverflowToolbar >
+				<Title
+                    text="{i18n>displayClosedItems}"
+                    level="H5"/>
+				<ToolbarSpacer/>
+				<Button
+                    text="{i18n>btnCancel}"
+                   icon="sap-icon://sys-cancel"
+                    type="Transparent"
+                    press="onCancel"/>
+			</OverflowToolbar>
+			<!-- Display Table -->
+			<uiTable:Table
+				id="DisplayTable"
+				rows="{Display>/Items}"
+				selectionMode="None"
+				enableBusyIndicator="true"
+				enableColumnReordering="true"
+                visibleRowCountMode="Auto">
+				<uiTable:columns>
+					<uiTable:Column
+						hAlign="Center"
+						sortProperty="Role"
+						filterProperty="Role"
+						width="17rem">
+						<Label text="{i18n>displayRoleProfileName}"/>
+						<uiTable:template>
+							<Text text="{Display>Role}"/>
+						</uiTable:template>
+					</uiTable:Column>
+					<uiTable:Column
+						hAlign="Center"
+						sortProperty="RoleDesc"
+						filterProperty="RoleDesc"
+						width="26rem">
+						<Label text="{i18n>displayRoleProfileDescription}"/>
+						<uiTable:template>
+							<Text text="{Display>RoleDesc}"/>
+						</uiTable:template>
+					</uiTable:Column>
+					<uiTable:Column
+						hAlign="Center"
+						sortProperty="FromDate"
+						filterProperty="FromDate">
+						<Label text="{i18n>displayFromDate}"/>
+						<uiTable:template>
+							<Text text="{Display>FromDate}"/>
+						</uiTable:template>
+					</uiTable:Column>
+					<uiTable:Column
+						hAlign="Center"
+						sortProperty="ToDate"
+						filterProperty="ToDate"
+						>
+						<Label text="{i18n>displayToDate}"/>
+						<uiTable:template>
+							<Text text="{Display>ToDate}"/>
+						</uiTable:template>
+					</uiTable:Column>
+					<uiTable:Column
+						hAlign="Center"
+						sortProperty="UtilizationText"
+						filterProperty="UtilizationText"
+						>
+						<Label text="{i18n>displayUsageCount}"/>
+						<uiTable:template>
+							<Link
+							text="{Display>UtilizationText}"
+							press="onUtilizedPress"/>
+						</uiTable:template>
+					</uiTable:Column>
+					<uiTable:Column
+						hAlign="Center"
+						sortProperty="LicCat"
+						filterProperty="LicCat"
+						width="9rem">
+						<Label text="{i18n>displayLicensingCategory}"/>
+						<uiTable:template>
+							<Text text="{Display>LicCat}"/>
+						</uiTable:template>
+					</uiTable:Column>
+					<uiTable:Column
+                        hAlign="Center"
+                        width="7rem">
+                        <Label text="{i18n>displayAction}"/>
+                        <uiTable:template>
+                            <Text text="{Display>Action}" />
+                        </uiTable:template>
+                    </uiTable:Column>
+
+                    <uiTable:Column
+                        hAlign="Center"
+                        width="250px">
+                        <Label text="{i18n>displayComment}"/>
+                        <uiTable:template>
+                            <Text text="{Display>Comment}" />
+                        </uiTable:template>
+                    </uiTable:Column>
+				</uiTable:columns>
+			</uiTable:Table>
+		</content>
+	</Page>
+</mvc:View>

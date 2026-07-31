@@ -1,0 +1,20 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core">
+
+    <SelectDialog
+        id="reviewerVHDialog"
+        title="{i18n>dlgSelectReviewer}"
+        search="onReviewerVHSearch"
+        confirm="onReviewerVHConfirm"
+        cancel="onReviewerVHCancel"
+        items="{
+           path:'/Reassign_VHSet'
+        }">
+       <StandardListItem
+            title="{REVIEWER}"
+            description="{REVIEWERNAME}"
+            info="{REVIEW_TYPE}"
+            type="Active"/>
+    </SelectDialog>
+</core:FragmentDefinition>

@@ -1,0 +1,37 @@
+/* Enter your custom styles here */
+
+.loginPage {
+    background: #eff5ff;
+}
+
+.loginCard {
+    background-color: #ffffff;
+    padding: 2.5rem 2rem;
+    border-radius: 16px;
+    box-shadow: 0 18px 40px rgba(0, 84, 173, 0.18);
+    border: 1px solid #e3ecf7;
+}
+
+.loginSubtitle .sapMTitle {
+    color: #6a6d70;
+    font-weight: 400;
+}
+
+.logo{
+    display: block;
+    margin: 0 auto;
+}
+
+.headerRow{
+    background-color: #fff;
+    padding: 1rem;
+}
+
+.sapUiMedia-Std-Desktop .sapUShellApplicationContainer.sapUShellApplicationContainerLimitedWidth {
+    width: 100% !important;
+    max-width: none !important;
+}
+
+.criticalRow td {
+    background-color: #ff988c !important;
+}
