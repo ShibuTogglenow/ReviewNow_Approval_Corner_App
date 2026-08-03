@@ -52,19 +52,6 @@
 					type="Transparent"
 					press="onRefresh"/>
 				<Button
-					id="reviewPageFilter"
-					icon="sap-icon://filter"
-					text="{i18n>btnFilter}"
-					type="Transparent"
-					press="onToggleFilter"/>
-				<SearchField
-					id="reviewFilter"
-					visible="false"
-					width="250px"
-					placeholder="{i18n>searchPlaceholderReview}"
-					search="onSearch"
-					liveChange="onSearch"/>
-				<Button
 					text="{i18n>btnCancel}"
 					icon="sap-icon://sys-cancel"
 					type="Transparent"

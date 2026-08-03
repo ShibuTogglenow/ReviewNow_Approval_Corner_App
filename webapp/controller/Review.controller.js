@@ -69,7 +69,7 @@ sap.ui.define([
             this._loadReviewData(true);
         },
 
-        _loadReviewData: function(bShowToast) {
+       _loadReviewData: function(bShowToast) {
             // Load review detail rows for the selected user, job, and connector.
             var oModel = this._getODataModel();
             var oBundle = this.getView().getModel("i18n").getResourceBundle();
@@ -83,11 +83,10 @@ sap.ui.define([
                 ],
                 success: function(oData) {
                     var aItems = oData.results || [];
-                    aItems.forEach(function(oItem) {
-                        oItem.OriginalAction = oItem.Action || "";
-                        oItem.OriginalComment = oItem.Comment || "";
-                    });
-                    this._getReviewModel().setProperty("/Items", aItems);
+                    var aOriginalItems = JSON.parse(JSON.stringify(aItems));
+                    var oReviewModel = this._getReviewModel();
+                    oReviewModel.setProperty("/Items", aItems);
+                    oReviewModel.setProperty("/OriginalItems", aOriginalItems);
                     this.byId("reviewTable").clearSelection();
                     this.getView().setBusy(false);
                     if (bShowToast) {
@@ -101,33 +100,6 @@ sap.ui.define([
                     MessageToast.show(oBundle.getText("msgLoadError", ["review details"]));
                 }.bind(this)
             });
-        },
-
-        onToggleFilter: function() {
-            var oSearch = this.byId("reviewFilter");
-            oSearch.setVisible(!oSearch.getVisible());
-            if (oSearch.getVisible()) {
-                oSearch.focus();
-            }
-        },
-
-        onSearch: function(oEvent) {
-            var sValue = oEvent.getParameter("newValue") ||
-                oEvent.getParameter("query");
-            var oTable = this.byId("reviewTable");
-            var oBinding = oTable.getBinding("rows");
-            if (!sValue) {
-                oBinding.filter([]);
-                return;
-            }
-            var oFilter = new Filter({
-                filters: [
-                    new Filter("Role", FilterOperator.Contains, sValue),
-                    new Filter("RoleDesc", FilterOperator.Contains, sValue)
-                ],
-                and: false
-            });
-            oBinding.filter([oFilter]);
         },
 
         onSave: function() {
@@ -340,12 +312,11 @@ sap.ui.define([
         onCancel: function() {
             this.byId("reviewTable").clearSelection();
             var oReviewModel = this._getReviewModel();
-            var aItems = oReviewModel.getProperty("/Items") || [];
-            aItems.forEach(function(oItem, iIndex) {
-                oReviewModel.setProperty("/Items/" + iIndex + "/Action", "");
-                oReviewModel.setProperty("/Items/" + iIndex + "/Comment", "");
-                oReviewModel.setProperty("/Items/" + iIndex + "/CommentState", "None");
-            });
+            var aOriginalItems = oReviewModel.getProperty("/OriginalItems") || [];
+            oReviewModel.setProperty(
+                "/Items",
+                JSON.parse(JSON.stringify(aOriginalItems))
+            );
             oReviewModel.refresh(true);
         },
 

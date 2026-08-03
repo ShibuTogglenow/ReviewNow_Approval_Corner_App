@@ -62,19 +62,6 @@
                                         type="Transparent"
                                         press="onNewRefresh"/>
                                     <Button
-                                        id="btnFilter"
-                                        icon="sap-icon://filter"
-                                        text="{i18n>btnFilter}"
-                                        type="Transparent"
-                                        press="onToggleFilter"/>
-                                    <SearchField
-                                        id="searchFilterNew"
-                                        width="15rem"
-                                        visible="false"
-                                        placeholder="{i18n>searchPlaceholder}"
-                                        search="onSearch"
-                                        liveChange="onSearch"/>
-                                    <Button
                                         icon="sap-icon://add-employee"
                                         text="{i18n>btnReassign}"
                                         type="Transparent"
@@ -167,19 +154,6 @@
                                         type="Transparent"
                                         press="onInProgressRefresh"/>
                                     <Button
-                                        id="btnFilterInProgress"
-                                        icon="sap-icon://filter"
-                                        text="{i18n>btnFilter}"
-                                        type="Transparent"
-                                        press="onToggleFilter"/>
-                                    <SearchField
-                                        id="searchFilterInProgress"
-                                        width="15rem"
-                                        visible="false"
-                                        placeholder="{i18n>searchPlaceholder}"
-                                        search="onSearch"
-                                        liveChange="onSearch"/>
-                                    <Button
                                         icon="sap-icon://add-employee"
                                         text="{i18n>btnReassign}"
                                         type="Transparent"
@@ -266,19 +240,6 @@
                                         text="{i18n>btnRefresh}"
                                         type="Transparent"
                                         press="onClosedRefresh"/>
-                                    <Button
-                                        id="btnFilterClosed"
-                                        icon="sap-icon://filter"
-                                        text="{i18n>btnFilter}"
-                                        type="Transparent"
-                                        press="onToggleFilter"/>
-                                    <SearchField
-                                        id="searchFilterClosed"
-                                        width="15rem"
-                                        visible="false"
-                                        placeholder="{i18n>searchPlaceholder}"
-                                        search="onSearch"
-                                        liveChange="onSearch"/>
                                     <Button
                                         icon="sap-icon://show"
                                         text="{i18n>mainDisplay}"

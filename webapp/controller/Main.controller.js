@@ -212,26 +212,6 @@ sap.ui.define([
             this._readData(sKey, oTable);
         },
 
-        onToggleFilter: function() {
-            var oSearch = this._getSearchControl();
-            if (!oSearch) {
-                return;
-            }
-            oSearch.setVisible(!oSearch.getVisible());
-            if (oSearch.getVisible()) {
-                oSearch.focus();
-            }
-        },
-
-        onSearch: function(oEvent) {
-            // Debounce search input before applying a filter to the current table.
-            var sValue = (oEvent.getParameter("newValue") || oEvent.getParameter("query") || "").toString();
-            clearTimeout(this._iSearchDebounce);
-            this._iSearchDebounce = setTimeout(function() {
-                this._applySearchFilter(sValue);
-            }.bind(this), 300);
-        },
-
         _applySearchFilter: function(sValue) {
             // Apply a simple text filter across job and user fields for the selected tab.
             var oTable = this._getCurrentTable();
