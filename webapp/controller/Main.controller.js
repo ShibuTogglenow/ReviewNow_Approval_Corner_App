@@ -90,10 +90,6 @@ sap.ui.define([
             return this.byId(this._mTables[sKey]);
         },
 
-        _getSearchControl: function() {
-            return this.byId(this._mSearchFields[this._getCurrentKey()]);
-        },
-
         onTabSelect: function(oEvent) {
             this._getMainModel().setProperty("/selectedKey", oEvent.getParameter("key"));
         },
@@ -210,36 +206,6 @@ sap.ui.define([
             oTable.clearSelection();
             oTable.setBusy(true);
             this._readData(sKey, oTable);
-        },
-
-        _applySearchFilter: function(sValue) {
-            // Apply a simple text filter across job and user fields for the selected tab.
-            var oTable = this._getCurrentTable();
-            if (!oTable) {
-                return;
-            }
-            var oBinding = oTable.getBinding("rows");
-            if (!oBinding) {
-                return;
-            }
-            var sSearchValue = (sValue || "").toString();
-            if (!sSearchValue.trim()) {
-                oBinding.filter([]);
-                return;
-            }
-            var oFilter = new Filter({
-                filters: [
-                    new Filter("JOB_ID", FilterOperator.Contains, sSearchValue),
-                    new Filter({
-                        path: "EUSER",
-                        operator: FilterOperator.Contains,
-                        value1: sSearchValue,
-                        caseSensitive: false
-                    })
-                ],
-                and: false
-            });
-            oBinding.filter([oFilter]);
         },
 
         onRowSelectionChange: function(oEvent) {
