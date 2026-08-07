@@ -272,6 +272,44 @@ sap.ui.define([
             return this._oReassignDialog;
         },
 
+        onReviewerChange: function (oEvent) {
+            var oBundle = this.getView().getModel("i18n").getResourceBundle();
+            var oInput = oEvent.getSource();
+            var sReviewer = oInput.getValue().trim().toUpperCase();
+            if (!sReviewer) {
+                oInput.setValueState("None");
+                return;
+            }
+            var oModel = this._getOwnerModel();
+            oModel.read("/Reassign_VHSet", {
+                filters: [
+                    new sap.ui.model.Filter(
+                        "REVIEWER",
+                        sap.ui.model.FilterOperator.EQ,
+                        sReviewer
+                    )
+                ],
+                success: function (oData) {
+                    if (oData.results.length > 0) {
+                        // Valid reviewer
+                        oInput.setValue(sReviewer);
+                        oInput.setValueState("None");
+                        this._getReassignModel().setProperty(
+                            "/reviewer",
+                            oData.results[0].REVIEWER
+                        );
+                    } else {
+                        oInput.setValueState("Error");
+                        oInput.setValueStateText(oBundle.getText("valReviewerInvalid"));
+                    }
+                }.bind(this),
+                error: function () {
+                    oInput.setValueState("Error");
+                    oInput.setValueStateText(oBundle.getText("valReviewerValidateError"));
+                }
+            });
+        },
+
         onReviewerValueHelp: function() {
             if (!this._oReviewerVH) {
                 this._oReviewerVH = sap.ui.xmlfragment(
@@ -344,16 +382,19 @@ sap.ui.define([
             oDialog.setBusy(true);
             oModel.create("/RNOW_Approval_ReassignSet", oPayload, {
                 success: function(oResponse) {
-                    oDialog.setBusy(false);
-                    MessageToast.show(
-                        (oResponse && oResponse.Returnmsg) || oBundle.getText("msgReassignSuccess")
+                oDialog.setBusy(false);
+                MessageBox.success(
+                    (oResponse && oResponse.Returnmsg) || oBundle.getText("msgReassignSuccess"), {
+                        onClose: function () {
+                            this._resetReassignModel();
+                            oDialog.close();
+                            var sKey = this._getCurrentKey();
+                            if (sKey === "New" || sKey === "InProgress") {
+                                this._refreshTab(sKey);
+                            }
+                            }.bind(this)
+                        }
                     );
-                    this._resetReassignModel();
-                    oDialog.close();
-                    var sKey = this._getCurrentKey();
-                    if (sKey === "New" || sKey === "InProgress") {
-                        this._refreshTab(sKey);
-                    }
                 }.bind(this),
                 error: function(oError) {
                     oDialog.setBusy(false);
@@ -381,32 +422,53 @@ sap.ui.define([
             }
         },
 
-        _validateReassign: function(oData) {
+        _clearReassignValidation: function () {
+            var oReviewer = this.byId("reviewerNameInput");
+            var oComment = this.byId("reassignComment");
+            [oReviewer, oComment].forEach(function (oControl) {
+                if (oControl) {
+                    oControl.setValueState(sap.ui.core.ValueState.None);
+                    oControl.setValueStateText("");
+                }
+            });
+        },
+
+        _validateReassign: function (oData) {
             var oReviewer = this.byId("reviewerNameInput"),
                 oComment = this.byId("reassignComment"),
+                oBundle = this.getView().getModel("i18n").getResourceBundle(),
                 bValid = true;
+            // Reset only the comment field
             if (oReviewer) {
-                oReviewer.setValueState("None");
+                oReviewer.setValueState(sap.ui.core.ValueState.None);
+                oReviewer.setValueStateText("");
             }
             if (oComment) {
                 oComment.setValueState("None");
             }
+            // Reviewer mandatory check
             if (!oData.reviewer || !oData.reviewer.trim()) {
                 if (oReviewer) {
                     oReviewer.setValueState("Error");
-                    oReviewer.setValueStateText(this.getView().getModel("i18n").getResourceBundle().getText("valReviewerRequired"));
+                    oReviewer.setValueStateText(oBundle.getText("valReviewerRequired"));
                 }
                 bValid = false;
             }
+            // Reviewer validity check
+            if (oReviewer && oReviewer.getValueState() === "Error") {
+                MessageBox.warning(oBundle.getText("msgReviewerInvalid"));
+                return false;
+            }
+            // Comment mandatory check
             if (!oData.reason || !oData.reason.trim()) {
                 if (oComment) {
                     oComment.setValueState("Error");
-                    oComment.setValueStateText(this.getView().getModel("i18n").getResourceBundle().getText("valReasonRequired"));
+                    oComment.setValueStateText(oBundle.getText("valReasonRequired"));
                 }
                 bValid = false;
             }
             if (!bValid) {
-                MessageBox.warning(this.getView().getModel("i18n").getResourceBundle().getText("msgFillMandatory"));
+                MessageBox.warning(oBundle.getText("msgFillMandatory"));
             }
             return bValid;
         },
@@ -416,6 +478,7 @@ sap.ui.define([
                 reviewer: "",
                 reason: ""
             });
+            this._clearReassignValidation();
         },
         
         onExit: function() {

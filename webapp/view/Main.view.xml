@@ -267,7 +267,7 @@
                                         <Text text="{main>EUSER}"/>
                                     </uiTable:template>
                                 </uiTable:Column>
-                                <uiTable:Column hAlign="Center" width="24rem" filterProperty="REVCYCLENAME">
+                                <uiTable:Column hAlign="Center" width="18rem" filterProperty="REVCYCLENAME">
                                     <Label text="{i18n>colJobName}"/>
                                     <uiTable:template>
                                         <Text text="{main>REVCYCLENAME}"/>
@@ -294,7 +294,13 @@
                                 <uiTable:Column hAlign="Center" filterProperty="RCount">
                                     <Label text="{i18n>colNoOfRoles}"/>
                                     <uiTable:template>
-                                        <Text text="{main>RCount}"/>
+                                        <Text text="{main>R_COUNT}"/>
+                                    </uiTable:template>
+                                </uiTable:Column>
+                                 <uiTable:Column hAlign="Center" filterProperty="ClosedComment">
+                                    <Label text="{i18n>colClosedComment}"/>
+                                    <uiTable:template>
+                                        <Text text="{main>ClosedComment}"/>
                                     </uiTable:template>
                                 </uiTable:Column>
                             </uiTable:columns>

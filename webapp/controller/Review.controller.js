@@ -121,9 +121,8 @@ sap.ui.define([
             if (!aChangedItems) {
                 return;
             }
-            if (aChangedItems.length === 0) {
-                MessageToast.show("No changes to submit.");
-                return;
+             if (aChangedItems.length === 0) {
+                aChangedItems = this._getReviewModel().getProperty("/Items") || [];
             }
             this._openSubmitDialog(aChangedItems);
         },
@@ -132,17 +131,20 @@ sap.ui.define([
             // Gather only rows that were modified and validate mandatory comments for remove actions.
             var oModel = this._getReviewModel();
             var aItems = oModel.getProperty("/Items") || [];
+            var aOriginalItems = oModel.getProperty("/OriginalItems") || [];
             var aChangedItems = [];
             for (var i = 0; i < aItems.length; i++) {
                 var oItem = aItems[i];
-                var bChanged = oItem.Action !== oItem.OriginalAction ||
-                    (oItem.Comment || "") !== (oItem.OriginalComment || "");
+                var oOriginal = aOriginalItems[i];
+                var bChanged =
+                    (oItem.Action || "") !== (oOriginal.Action || "") ||
+                    (oItem.Comment || "") !== (oOriginal.Comment || "");
                 if (!bChanged) {
                     continue;
                 }
                 if (!this._validateCommentForRow(oModel, "/Items/" + i)) {
                     var oBundle = this.getView().getModel("i18n").getResourceBundle();
-                    MessageToast.show(oBundle.getText("valCommentMandatoryRemove"));
+                     MessageToast.show(oBundle.getText("valCommentMandatoryRemove"));
                     return null;
                 }
                 aChangedItems.push(oItem);
@@ -205,7 +207,7 @@ sap.ui.define([
             oODataModel.create("/RNOW_NEWSet", oPayload, {
                 success: function(oData) {
                     oView.setBusy(false);
-                    MessageToast.show((oData && oData.Message) || oBundle.getText("msgReviewSubmitted"));
+                    MessageBox.success((oData && oData.Message) || oBundle.getText("msgReviewSubmitted"));
                     this._markItemsAsSaved(aChangedItems);
                     oView.getModel("review").refresh(true);
                     this.onNavBack();
@@ -311,13 +313,13 @@ sap.ui.define([
 
         onCancel: function() {
             this.byId("reviewTable").clearSelection();
-            var oReviewModel = this._getReviewModel();
-            var aOriginalItems = oReviewModel.getProperty("/OriginalItems") || [];
-            oReviewModel.setProperty(
-                "/Items",
-                JSON.parse(JSON.stringify(aOriginalItems))
-            );
-            oReviewModel.refresh(true);
+            // var oReviewModel = this._getReviewModel();
+            // var aOriginalItems = oReviewModel.getProperty("/OriginalItems") || [];
+            // oReviewModel.setProperty(
+            //     "/Items",
+            //     JSON.parse(JSON.stringify(aOriginalItems))
+            // );
+            // oReviewModel.refresh(true);
         },
 
         onRetain: function() {

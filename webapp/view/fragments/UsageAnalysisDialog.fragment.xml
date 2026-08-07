@@ -4,10 +4,9 @@
 	xmlns:uiTable="sap.ui.table">
 	<Dialog
         id="usageDialog"
-		icon="sap-icon://menu2"
         title="{usage>/title}"
         contentWidth="100%"
-    	contentHeight="700px"
+    	contentHeight="550px"
         resizable="true"
         draggable="true">
 		<content>
@@ -19,9 +18,10 @@
                 id="usageTable"
                 rows="{usage>/Items}"
 				width="100%"
-                selectionMode="None"
+                selectionMode="MultiToggle"
                 enableBusyIndicator="true"
                 enableColumnReordering="true"
+				alternateRowColors="true"
 				visibleRowCountMode="Auto" 
 				minAutoRowCount="15">
 				

@@ -39,12 +39,12 @@
 				<Button
 					icon="sap-icon://accept"
 					text="{i18n>btnRetain}"
-					type="Success"
+					type="Transparent"
 					press="onRetain"/>
 				<Button
 					icon="sap-icon://decline"
 					text="{i18n>btnRemove}"
-					type="Reject"
+					type="Transparent"
 					press="onRemove"/>
 				<Button
 					icon="sap-icon://refresh"

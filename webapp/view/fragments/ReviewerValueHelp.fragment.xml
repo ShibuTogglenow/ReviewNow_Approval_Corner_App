@@ -4,6 +4,7 @@
 
     <SelectDialog
         id="reviewerVHDialog"
+        contentHeight="500px"
         title="{i18n>dlgSelectReviewer}"
         search="onReviewerVHSearch"
         confirm="onReviewerVHConfirm"
@@ -14,7 +15,6 @@
        <StandardListItem
             title="{REVIEWER}"
             description="{REVIEWERNAME}"
-            info="{REVIEW_TYPE}"
             type="Active"/>
     </SelectDialog>
 </core:FragmentDefinition>

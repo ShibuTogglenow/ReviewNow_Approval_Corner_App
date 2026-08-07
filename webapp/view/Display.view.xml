@@ -46,7 +46,7 @@
 			<uiTable:Table
 				id="DisplayTable"
 				rows="{Display>/Items}"
-				selectionMode="None"
+				selectionMode="MultiToggle"
 				enableBusyIndicator="true"
 				enableColumnReordering="true"
                 visibleRowCountMode="Auto">

@@ -14,11 +14,12 @@
                     text="{i18n>lblReviewerName}"
                     required="true"/>
                 <Input
-                id="reviewerNameInput"
+                    id="reviewerNameInput"
                     value="{reassign>/reviewer}"
                     placeholder="{i18n>placeholderReviewerName}"
                     showValueHelp="true"
-                    valueHelpRequest=".onReviewerValueHelp"/>
+                    valueHelpRequest=".onReviewerValueHelp"
+                    change="onReviewerChange"/>
                                 <Label
                                         text="{i18n>lblReason}"
                                         required="true"
@@ -33,6 +34,7 @@
         </content>
         <beginButton>
             <Button
+                icon="sap-icon://add-employee"
                 text="{i18n>btnReassign}"
                 type="Accept"
                 press="onReassignConfirm"/>
