@@ -120,7 +120,6 @@
                             <Text text="{Display>Action}" />
                         </uiTable:template>
                     </uiTable:Column>
-
                     <uiTable:Column
                         hAlign="Center"
                         width="250px">

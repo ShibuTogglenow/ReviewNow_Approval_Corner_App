@@ -91,6 +91,7 @@ sap.ui.define([
         },
 
         onTabSelect: function(oEvent) {
+            this._clearSelections();
             this._getMainModel().setProperty("/selectedKey", oEvent.getParameter("key"));
         },
 

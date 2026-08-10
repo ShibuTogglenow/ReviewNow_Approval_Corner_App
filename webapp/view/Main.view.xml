@@ -297,12 +297,6 @@
                                         <Text text="{main>R_COUNT}"/>
                                     </uiTable:template>
                                 </uiTable:Column>
-                                 <uiTable:Column hAlign="Center" filterProperty="ClosedComment">
-                                    <Label text="{i18n>colClosedComment}"/>
-                                    <uiTable:template>
-                                        <Text text="{main>ClosedComment}"/>
-                                    </uiTable:template>
-                                </uiTable:Column>
                             </uiTable:columns>
 
                         </uiTable:Table>

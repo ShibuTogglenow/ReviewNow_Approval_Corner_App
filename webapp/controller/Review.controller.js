@@ -124,7 +124,8 @@ sap.ui.define([
              if (aChangedItems.length === 0) {
                 aChangedItems = this._getReviewModel().getProperty("/Items") || [];
             }
-            this._openSubmitDialog(aChangedItems);
+            this._aPendingSubmitItems = aChangedItems;
+            this._openSubmitDialog();
         },
 
         _collectChangedItems: function() {
@@ -152,7 +153,7 @@ sap.ui.define([
             return aChangedItems;
         },
 
-        _openSubmitDialog: function(aChangedItems) {
+        _openSubmitDialog: function() {
             // Prompt the user for a review comment before sending the approval payload.
             var oBundle = this.getView().getModel("i18n").getResourceBundle();
             if (!this._oSubmitDialog) {
@@ -179,7 +180,7 @@ sap.ui.define([
                                 return;
                             }
                             this._oSubmitDialog.close();
-                            this._submitReview(aChangedItems, sComment);
+                            this._submitReview(this._aPendingSubmitItems || [], sComment);
                         }.bind(this)
                     }),
                     endButton: new sap.m.Button({
@@ -209,7 +210,8 @@ sap.ui.define([
                     oView.setBusy(false);
                     MessageBox.success((oData && oData.Message) || oBundle.getText("msgReviewSubmitted"));
                     this._markItemsAsSaved(aChangedItems);
-                    oView.getModel("review").refresh(true);
+                    this._aPendingSubmitItems = null;
+                    // oView.getModel("review").refresh(true);
                     this.onNavBack();
                 }.bind(this),
                 error: function(oError) {
@@ -279,7 +281,7 @@ sap.ui.define([
                     oView.setBusy(false);
                     MessageToast.show((oData && oData.Message) || oBundle.getText("msgReviewSaved"));
                     this._markItemsAsSaved(aChangedItems);
-                    oView.getModel("review").refresh(true);
+                    // oView.getModel("review").refresh(true);
                     this.onNavBack();
                 }.bind(this),
                 error: function(oError) {
