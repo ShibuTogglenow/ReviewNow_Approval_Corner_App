@@ -29,7 +29,9 @@
                                         rows="4"
                                         width="100%"
                                         value="{reassign>/reason}"
-                                        placeholder="{i18n>placeholderReason}"/>
+                                        valueLiveUpdate="true"
+                                        placeholder="{i18n>placeholderReason}"
+                                        liveChange="onReassignCommentChange"/>
             </VBox>
         </content>
         <beginButton>

@@ -162,7 +162,13 @@ sap.ui.define([
                     rows: 5,
                     maxLength: 200,
                     required: true,
-                    placeholder: oBundle.getText("reviewCommentsPlaceholder")
+                    placeholder: oBundle.getText("reviewCommentsPlaceholder"),
+                    liveChange: function(oEvent) {
+                    var sValue = oEvent.getParameter("value").trim();
+                    if (sValue) {
+                        this._oSubmitTextArea.setValueState("None");
+                    }
+                }.bind(this)
                 });
                 this._oSubmitDialog = new sap.m.Dialog({
                     title: oBundle.getText("dlgReviewCommentsTitle"),
@@ -208,11 +214,15 @@ sap.ui.define([
             oODataModel.create("/RNOW_NEWSet", oPayload, {
                 success: function(oData) {
                     oView.setBusy(false);
-                    MessageBox.success((oData && oData.Message) || oBundle.getText("msgReviewSubmitted"));
+                    MessageBox.success((oData && oData.Message) || oBundle.getText("msgReviewSubmitted"),
+                    {
+                        onClose: function() {
+                            this.onNavBack();
+                        }.bind(this)
+                    });
                     this._markItemsAsSaved(aChangedItems);
                     this._aPendingSubmitItems = null;
                     // oView.getModel("review").refresh(true);
-                    this.onNavBack();
                 }.bind(this),
                 error: function(oError) {
                     oView.setBusy(false);
@@ -480,9 +490,17 @@ sap.ui.define([
             var bChanged = false;
             for (var i = 0; i < aItems.length; i++) {
                 var oItem = aItems[i];
-                if (oItem.Action !== oItem.OriginalAction) {
+                var sCurrentAction = oItem.Action || "";
+                var sOriginalAction = oItem.OriginalAction || "";
+                var sCurrentComment = (oItem.comments || "").trim();
+                var sOriginalComment = (oItem.OriginalComment || "").trim();
+                var bActionChanged = sCurrentAction !== sOriginalAction;
+                var bCommentChanged = sCurrentComment !== sOriginalComment;
+                // Row is changed if either Action or Comment was changed
+                if (bActionChanged || bCommentChanged) {
                     bChanged = true;
-                    if (!this._validateUsageCommentForRow(oUsageModel, "/Items/" + i)) {
+                    // Validate comment whenever the row is being saved
+                    if (!this._validateUsageCommentForRow(oUsageModel,"/Items/" + i)) {
                         var oBundle = this.getView().getModel("i18n").getResourceBundle();
                         MessageToast.show(oBundle.getText("valCommentMandatoryLock"));
                         return;

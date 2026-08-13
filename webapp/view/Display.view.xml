@@ -4,7 +4,7 @@
 	xmlns="sap.m"
 	xmlns:uiTable="sap.ui.table"
 	xmlns:core="sap.ui.core">
-	<Page id="displayPage" showHeader="false" enableScrolling="false">
+	<Page id="displayPage" showHeader="false" enableScrolling="true">
 		<content>
 			<VBox class="sapUiSmallMarginBottom">
 				<HBox
@@ -122,7 +122,8 @@
                     </uiTable:Column>
                     <uiTable:Column
                         hAlign="Center"
-                        width="250px">
+                        width="250px"
+						sortProperty="Comment" filterProperty="Comment">
                         <Label text="{i18n>displayComment}"/>
                         <uiTable:template>
                             <Text text="{Display>Comment}" />

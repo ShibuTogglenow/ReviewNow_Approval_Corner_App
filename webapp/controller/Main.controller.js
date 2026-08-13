@@ -273,6 +273,14 @@ sap.ui.define([
             return this._oReassignDialog;
         },
 
+        onReassignCommentChange: function(oEvent) {
+            var oTextArea = oEvent.getSource();
+            var sValue = oEvent.getParameter("value").trim();
+            if (sValue) {
+                oTextArea.setValueState("None");
+            }
+        },
+
         onReviewerChange: function (oEvent) {
             var oBundle = this.getView().getModel("i18n").getResourceBundle();
             var oInput = oEvent.getSource();

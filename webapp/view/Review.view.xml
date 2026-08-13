@@ -148,10 +148,11 @@
 						<uiTable:template>
 							<Input
 								value="{review>Comment}"
+								valueLiveUpdate="true"
 								valueState="{review>CommentState}"
 								valueStateText="{i18n>commentMandatory}"
 								placeholder="Enter comment"
-								change="onCommentChange"/>
+								liveChange="onCommentChange"/>
 						</uiTable:template>
 					</uiTable:Column>
 				</uiTable:columns>

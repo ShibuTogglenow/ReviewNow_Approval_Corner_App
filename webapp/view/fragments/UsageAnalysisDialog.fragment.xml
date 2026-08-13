@@ -104,6 +104,7 @@
 						<uiTable:template>
 							<Input
 								value="{usage>comments}"
+								valueLiveUpdate="true"
 								valueState="{usage>CommentState}"
 								valueStateText="{i18n>commentMandatory}"
 								placeholder="{i18n>placeholderUsageComment}"
