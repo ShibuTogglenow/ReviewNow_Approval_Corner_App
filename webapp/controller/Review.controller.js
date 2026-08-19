@@ -52,12 +52,10 @@ sap.ui.define([
             this._sReviewType = decodeURIComponent(oArgs.reviewType);
             this._sFullName = decodeURIComponent(oArgs.fullName);
             var oReviewModel = new JSONModel({
-                pageTitle: this._sReviewType +
+               pageTitle: this._sReviewType +
                     " Review of: " +
-                    this._sUser +
-                    " (" +
                     this._sFullName +
-                    ") - Job ID #" +
+                    " - Job ID #" +
                     this._sJobId,
                 Items: []
             });
@@ -292,7 +290,9 @@ sap.ui.define([
                     MessageToast.show((oData && oData.Message) || oBundle.getText("msgReviewSaved"));
                     this._markItemsAsSaved(aChangedItems);
                     // oView.getModel("review").refresh(true);
-                    this.onNavBack();
+                    setTimeout(function() {
+                        this.onNavBack();
+                    }.bind(this), 1500);
                 }.bind(this),
                 error: function(oError) {
                     oView.setBusy(false);
@@ -344,11 +344,12 @@ sap.ui.define([
 
         _updateSelectedRows: function(sAction) {
             // Apply the selected action to all currently chosen rows and validate comments.
+            var oBundle = this.getView().getModel("i18n").getResourceBundle();
             var oTable = this.byId("reviewTable"),
                 oModel = this.getView().getModel("review"),
                 aSelectedIndices = oTable.getSelectedIndices();
             if (aSelectedIndices.length === 0) {
-                MessageToast.show("Please select at least one record.");
+               MessageToast.show(oBundle.getText("msgSelectRecord"));
                 return;
             }
             aSelectedIndices.forEach(function(iIndex) {
@@ -581,6 +582,67 @@ sap.ui.define([
             });
         },
 
+        onMassComments: function() {
+            var oTable = this.byId("reviewTable");
+            var oBundle = this.getView().getModel("i18n").getResourceBundle();
+            var aSelectedIndices = oTable.getSelectedIndices();
+            if (aSelectedIndices.length === 0) {
+                MessageToast.show(oBundle.getText("msgSelectRecord"));
+                return;
+            }
+            this._aMassCommentIndices = aSelectedIndices;
+            this._openMassCommentDialog();
+        },
+
+        _openMassCommentDialog: function() {
+            var oBundle = this.getView().getModel("i18n").getResourceBundle();
+            if (!this._oMassCommentDialog) {
+                this._oMassCommentTextArea = new sap.m.TextArea({
+                    width: "100%",
+                    rows: 5,
+                    maxLength: 200,
+                    placeholder: oBundle.getText("commentPlaceholder")
+                });
+                this._oMassCommentDialog = new sap.m.Dialog({
+                    title: oBundle.getText("dlgMassCommentTitle"),
+                    content: [this._oMassCommentTextArea],
+                    beginButton: new sap.m.Button({
+                        text: oBundle.getText("btnOk"),
+                        type: "Accept",
+                        press: function() {
+                            var sComment = this._oMassCommentTextArea.getValue().trim();
+                            if (!sComment) {
+                                this._oMassCommentTextArea.setValueState("Error");
+                                this._oMassCommentTextArea.setValueStateText(oBundle.getText("msgEnterReviewComments"));
+                                return;
+                            }
+                            this._applyMassComment(sComment);
+                            this._oMassCommentDialog.close();
+                        }.bind(this)
+                    }),
+                    endButton: new sap.m.Button({
+                        text: oBundle.getText("btnCancel"),
+                        press: function() { this._oMassCommentDialog.close(); }.bind(this)
+                    })
+                });
+                this.getView().addDependent(this._oMassCommentDialog);
+            }
+            this._oMassCommentTextArea.setValue("");
+            this._oMassCommentTextArea.setValueState("None");
+            this._oMassCommentDialog.open();
+        },
+
+        _applyMassComment: function(sComment) {
+            var oTable = this.byId("reviewTable");
+            var oModel = this.getView().getModel("review");
+            (this._aMassCommentIndices || []).forEach(function(iIndex) {
+                var sPath = oTable.getContextByIndex(iIndex).getPath();
+                oModel.setProperty(sPath + "/Comment", sComment);
+                this._validateCommentForRow(oModel, sPath);
+            }.bind(this));
+            this._aMassCommentIndices = null;
+        },
+
          onExit: function() {
             try {
                 this.getOwnerComponent().getRouter().getRoute("ReviewView").detachPatternMatched(this._onRouteMatched, this);
@@ -593,6 +655,11 @@ sap.ui.define([
                 this._oSubmitDialog.destroy();
                 this._oSubmitDialog = null;
                 this._oSubmitTextArea = null;
+            }
+            if (this._oMassCommentDialog) {
+                this._oMassCommentDialog.destroy();
+                this._oMassCommentDialog = null;
+                this._oMassCommentTextArea = null;
             }
         }
 

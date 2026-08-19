@@ -4,7 +4,7 @@
     xmlns="sap.m"
     xmlns:uiTable="sap.ui.table">
 
-    <Page id="mainPage" showHeader="false" enableScrolling="true">
+    <Page id="mainPage" showHeader="false">
         <content>
 
             <VBox class="sapUiSmallMarginBottom">
@@ -70,52 +70,166 @@
                             </uiTable:extension>
 
                             <uiTable:columns>
-                                <uiTable:Column hAlign="Center" filterProperty="CONNECTOR">
+                                <uiTable:Column hAlign="Center" width="7rem" filterProperty="CONNECTOR">
                                     <Label text="{i18n>colConnector}"/>
                                     <uiTable:template>
                                         <Text text="{main>CONNECTOR}"/>
                                     </uiTable:template>
                                 </uiTable:Column>
-                                <uiTable:Column hAlign="Center" filterProperty="JOB_ID">
+                                <uiTable:Column hAlign="Center" width="5rem" filterProperty="JOB_ID">
                                     <Label text="{i18n>colJobId}"/>
                                     <uiTable:template>
                                         <Text text="{main>JOB_ID}"/>
                                     </uiTable:template>
                                 </uiTable:Column>
-                                <uiTable:Column hAlign="Center" sortProperty="EUSER" filterProperty="EUSER">
-                                    <Label text="{i18n>colUserName}"/>
-                                    <uiTable:template>
-                                        <Text text="{main>EUSER}"/>
-                                    </uiTable:template>
-                                </uiTable:Column>
-                                <uiTable:Column hAlign="Center" width="24rem" filterProperty="REVCYCLENAME">
+                                <uiTable:Column hAlign="Center" width="14rem" filterProperty="REVCYCLENAME">
                                     <Label text="{i18n>colJobName}"/>
                                     <uiTable:template>
                                         <Text text="{main>REVCYCLENAME}"/>
                                     </uiTable:template>
                                 </uiTable:Column>
-                                <uiTable:Column hAlign="Center" filterProperty="ATT_FISCAL">
+                                <uiTable:Column hAlign="Center" width="3rem" filterProperty="ATT_FISCAL">
                                     <Label text="{i18n>colFiscalYear}"/>
                                     <uiTable:template>
                                         <Text text="{main>ATT_FISCAL}"/>
                                     </uiTable:template>
                                 </uiTable:Column>
-                                <uiTable:Column hAlign="Center" filterProperty="ATT_QUARTERLY">
+                                <uiTable:Column hAlign="Center" width="4rem" filterProperty="ATT_QUARTERLY">
                                     <Label text="{i18n>colFiscalQuarter}"/>
                                     <uiTable:template>
                                         <Text text="{main>ATT_QUARTERLY}"/>
                                     </uiTable:template>
                                 </uiTable:Column>
-                                <uiTable:Column hAlign="Center" filterProperty="REVIEW_TYPE">
+                                <uiTable:Column hAlign="Center" width="7rem" filterProperty="REVIEW_TYPE">
                                     <Label text="{i18n>colReviewType}"/>
                                     <uiTable:template>
                                         <Text text="{main>REVIEW_TYPE}"/>
                                     </uiTable:template>
                                 </uiTable:Column>
-                                <uiTable:Column hAlign="Center" filterProperty="RCount">
-                                    <Label text="{i18n>colNoOfRoles}"/>
+                                <uiTable:Column hAlign="Center" width="7rem" sortProperty="EUSER" filterProperty="EUSER">
+                                    <Label text="{i18n>colUserName}"/>
+                                    <uiTable:template>
+                                        <Text text="{main>EUSER}"/>
+                                    </uiTable:template>
+                                </uiTable:Column>
+                               <!-- First Name -->
+                                <uiTable:Column
+                                    hAlign="Center"
+                                    width="7rem"
+                                    filterProperty="FIRSTNAME">
+                                    <Label text="{i18n>colFirstName}"/>
+                                    <uiTable:template>
+                                        <Text text="{main>FIRSTNAME}"/>
+                                    </uiTable:template>
+                                </uiTable:Column>
+
+                                <!-- Last Name -->
+                                <uiTable:Column
+                                    hAlign="Center"
+                                    width="7rem"
+                                    filterProperty="LASTNAME">
+                                    <Label text="{i18n>colLastName}"/>
+                                    <uiTable:template>
+                                        <Text text="{main>LASTNAME}"/>
+                                    </uiTable:template>
+                                </uiTable:Column>
+
+                                <!-- User Group -->
+                                <uiTable:Column
+                                    hAlign="Center"
+                                    width="8rem"
+                                    filterProperty="UserGroup">
+                                    <Label text="{i18n>colUserGroup}"/>
+                                    <uiTable:template>
+                                        <Text text="{main>UserGroup}"/>
+                                    </uiTable:template>
+                                </uiTable:Column>
+
+                                <!-- Role Owner -->
+                                <uiTable:Column
+                                    hAlign="Center"
+                                    width="8rem"
+                                    filterProperty="RoleOwner">
+                                    <Label text="{i18n>colRoleOwner}"/>
+                                    <uiTable:template>
+                                        <Text text="{main>RoleOwner}"/>
+                                    </uiTable:template>
+                                </uiTable:Column>
+
+                                <!-- Licensing Category -->
+                                <uiTable:Column
+                                    hAlign="Center"
+                                    width="11rem"
+                                    filterProperty="LicCat">
+                                    <Label text="{i18n>colLicensingCategory}"/>
+                                    <uiTable:template>
+                                        <Text text="{main>LicCat}"/>
+                                    </uiTable:template>
+                                </uiTable:Column>
+
+                                <!-- Valid From -->
+                                <uiTable:Column
+                                    hAlign="Center"
+                                    width="6rem"
+                                    filterProperty="ValidFrom">
+                                    <Label text="{i18n>colValidFrom}"/>
+                                    <uiTable:template>
+                                        <Text text="{main>ValidFrom}"/>
+                                    </uiTable:template>
+                                </uiTable:Column>
+
+                                <!-- Valid To -->
+                                <uiTable:Column
+                                    hAlign="Center"
+                                    width="6rem"
+                                    filterProperty="ValidTo">
+                                    <Label text="{i18n>colValidTo}"/>
+                                    <uiTable:template>
+                                        <Text text="{main>ValidTo}"/>
+                                    </uiTable:template>
+                                </uiTable:Column>
+
+                                <!-- Role -->
+                                <uiTable:Column
+                                    hAlign="Center"
+                                    width="3rem"
+                                    filterProperty="RCount">
+                                    <Label text="{i18n>colRole}"/>
                                     <uiTable:template>
                                         <Text text="{main>RCount}"/>
+                                    </uiTable:template>
+                                </uiTable:Column>
+
+                                <!-- Profile -->
+                                <uiTable:Column
+                                    hAlign="Center"
+                                    width="4rem"
+                                    filterProperty="PCount">
+                                    <Label text="{i18n>colProfile}"/>
+                                    <uiTable:template>
+                                        <Text text="{main>PCount}"/>
+                                    </uiTable:template>
+                                </uiTable:Column>
+
+                                <!-- Lock Status -->
+                                <uiTable:Column
+                                    hAlign="Center"
+                                    width="7rem"
+                                    filterProperty="LockStatus">
+                                    <Label text="{i18n>colLockStatus}"/>
+                                    <uiTable:template>
+                                        <Text text="{main>LockStatus}"/>
+                                    </uiTable:template>
+                                </uiTable:Column>
+
+                                <!-- Last Logon Date -->
+                                <uiTable:Column
+                                    hAlign="Center"
+                                    width="7rem"
+                                    filterProperty="LastLogon">
+                                    <Label text="{i18n>colLastLogonDate}"/>
+                                    <uiTable:template>
+                                        <Text text="{main>LastLogon}"/>
                                     </uiTable:template>
                                 </uiTable:Column>
                             </uiTable:columns>
@@ -162,52 +276,166 @@
                             </uiTable:extension>
 
                             <uiTable:columns>
-                                <uiTable:Column hAlign="Center" filterProperty="CONNECTOR">
+                                <uiTable:Column hAlign="Center" width="7rem" filterProperty="CONNECTOR">
                                     <Label text="{i18n>colConnector}"/>
                                     <uiTable:template>
                                         <Text text="{main>CONNECTOR}"/>
                                     </uiTable:template>
                                 </uiTable:Column>
-                                <uiTable:Column hAlign="Center" filterProperty="JOB_ID">
+                                <uiTable:Column hAlign="Center" width="5rem" filterProperty="JOB_ID">
                                     <Label text="{i18n>colJobId}"/>
                                     <uiTable:template>
                                         <Text text="{main>JOB_ID}"/>
                                     </uiTable:template>
                                 </uiTable:Column>
-                                <uiTable:Column hAlign="Center" sortProperty="EUSER" filterProperty="EUSER">
-                                    <Label text="{i18n>colUserName}"/>
-                                    <uiTable:template>
-                                        <Text text="{main>EUSER}"/>
-                                    </uiTable:template>
-                                </uiTable:Column>
-                                <uiTable:Column hAlign="Center" width="24rem" filterProperty="REVCYCLENAME">
+                                <uiTable:Column hAlign="Center" width="14rem" filterProperty="REVCYCLENAME">
                                     <Label text="{i18n>colJobName}"/>
                                     <uiTable:template>
                                         <Text text="{main>REVCYCLENAME}"/>
                                     </uiTable:template>
                                 </uiTable:Column>
-                                <uiTable:Column hAlign="Center" filterProperty="ATT_FISCAL">
+                                <uiTable:Column hAlign="Center" width="3rem" filterProperty="ATT_FISCAL">
                                     <Label text="{i18n>colFiscalYear}"/>
                                     <uiTable:template>
                                         <Text text="{main>ATT_FISCAL}"/>
                                     </uiTable:template>
                                 </uiTable:Column>
-                                <uiTable:Column hAlign="Center" filterProperty="ATT_QUARTERLY">
+                                <uiTable:Column hAlign="Center" width="4rem" filterProperty="ATT_QUARTERLY">
                                     <Label text="{i18n>colFiscalQuarter}"/>
                                     <uiTable:template>
                                         <Text text="{main>ATT_QUARTERLY}"/>
                                     </uiTable:template>
                                 </uiTable:Column>
-                                <uiTable:Column hAlign="Center" filterProperty="REVIEW_TYPE">
+                                <uiTable:Column hAlign="Center" width="7rem" filterProperty="REVIEW_TYPE">
                                     <Label text="{i18n>colReviewType}"/>
                                     <uiTable:template>
                                         <Text text="{main>REVIEW_TYPE}"/>
                                     </uiTable:template>
                                 </uiTable:Column>
-                                <uiTable:Column hAlign="Center" filterProperty="RCount">
-                                    <Label text="{i18n>colNoOfRoles}"/>
+                                <uiTable:Column hAlign="Center" width="7rem" sortProperty="EUSER" filterProperty="EUSER">
+                                    <Label text="{i18n>colUserName}"/>
+                                    <uiTable:template>
+                                        <Text text="{main>EUSER}"/>
+                                    </uiTable:template>
+                                </uiTable:Column>
+                               <!-- First Name -->
+                                <uiTable:Column
+                                    hAlign="Center"
+                                    width="7rem"
+                                    filterProperty="FIRSTNAME">
+                                    <Label text="{i18n>colFirstName}"/>
+                                    <uiTable:template>
+                                        <Text text="{main>FIRSTNAME}"/>
+                                    </uiTable:template>
+                                </uiTable:Column>
+
+                                <!-- Last Name -->
+                                <uiTable:Column
+                                    hAlign="Center"
+                                    width="7rem"
+                                    filterProperty="LASTNAME">
+                                    <Label text="{i18n>colLastName}"/>
+                                    <uiTable:template>
+                                        <Text text="{main>LASTNAME}"/>
+                                    </uiTable:template>
+                                </uiTable:Column>
+
+                                <!-- User Group -->
+                                <uiTable:Column
+                                    hAlign="Center"
+                                    width="8rem"
+                                    filterProperty="UserGroup">
+                                    <Label text="{i18n>colUserGroup}"/>
+                                    <uiTable:template>
+                                        <Text text="{main>UserGroup}"/>
+                                    </uiTable:template>
+                                </uiTable:Column>
+
+                                <!-- Role Owner -->
+                                <uiTable:Column
+                                    hAlign="Center"
+                                    width="8rem"
+                                    filterProperty="RoleOwner">
+                                    <Label text="{i18n>colRoleOwner}"/>
+                                    <uiTable:template>
+                                        <Text text="{main>RoleOwner}"/>
+                                    </uiTable:template>
+                                </uiTable:Column>
+
+                                <!-- Licensing Category -->
+                                <uiTable:Column
+                                    hAlign="Center"
+                                    width="11rem"
+                                    filterProperty="LicCat">
+                                    <Label text="{i18n>colLicensingCategory}"/>
+                                    <uiTable:template>
+                                        <Text text="{main>LicCat}"/>
+                                    </uiTable:template>
+                                </uiTable:Column>
+
+                                <!-- Valid From -->
+                                <uiTable:Column
+                                    hAlign="Center"
+                                    width="6rem"
+                                    filterProperty="ValidFrom">
+                                    <Label text="{i18n>colValidFrom}"/>
+                                    <uiTable:template>
+                                        <Text text="{main>ValidFrom}"/>
+                                    </uiTable:template>
+                                </uiTable:Column>
+
+                                <!-- Valid To -->
+                                <uiTable:Column
+                                    hAlign="Center"
+                                    width="6rem"
+                                    filterProperty="ValidTo">
+                                    <Label text="{i18n>colValidTo}"/>
+                                    <uiTable:template>
+                                        <Text text="{main>ValidTo}"/>
+                                    </uiTable:template>
+                                </uiTable:Column>
+
+                                <!-- Role -->
+                                <uiTable:Column
+                                    hAlign="Center"
+                                    width="3rem"
+                                    filterProperty="RCount">
+                                    <Label text="{i18n>colRole}"/>
                                     <uiTable:template>
                                         <Text text="{main>RCount}"/>
+                                    </uiTable:template>
+                                </uiTable:Column>
+
+                                <!-- Profile -->
+                                <uiTable:Column
+                                    hAlign="Center"
+                                    width="4rem"
+                                    filterProperty="PCount">
+                                    <Label text="{i18n>colProfile}"/>
+                                    <uiTable:template>
+                                        <Text text="{main>PCount}"/>
+                                    </uiTable:template>
+                                </uiTable:Column>
+
+                                <!-- Lock Status -->
+                                <uiTable:Column
+                                    hAlign="Center"
+                                    width="7rem"
+                                    filterProperty="LockStatus">
+                                    <Label text="{i18n>colLockStatus}"/>
+                                    <uiTable:template>
+                                        <Text text="{main>LockStatus}"/>
+                                    </uiTable:template>
+                                </uiTable:Column>
+
+                                <!-- Last Logon Date -->
+                                <uiTable:Column
+                                    hAlign="Center"
+                                    width="7rem"
+                                    filterProperty="LastLogon">
+                                    <Label text="{i18n>colLastLogonDate}"/>
+                                    <uiTable:template>
+                                        <Text text="{main>LastLogon}"/>
                                     </uiTable:template>
                                 </uiTable:Column>
                             </uiTable:columns>
@@ -249,54 +477,195 @@
                             </uiTable:extension>
 
                             <uiTable:columns>
-                                <uiTable:Column hAlign="Center" filterProperty="CONNECTOR">
+                                <uiTable:Column hAlign="Center" width="7rem" filterProperty="CONNECTOR">
                                     <Label text="{i18n>colConnector}"/>
                                     <uiTable:template>
                                         <Text text="{main>CONNECTOR}"/>
                                     </uiTable:template>
                                 </uiTable:Column>
-                                <uiTable:Column hAlign="Center" filterProperty="JOB_ID">
+                                <uiTable:Column hAlign="Center" width="5rem" filterProperty="JOB_ID">
                                     <Label text="{i18n>colJobId}"/>
                                     <uiTable:template>
                                         <Text text="{main>JOB_ID}"/>
                                     </uiTable:template>
                                 </uiTable:Column>
-                                <uiTable:Column hAlign="Center" sortProperty="EUSER" filterProperty="EUSER">
-                                    <Label text="{i18n>colUserName}"/>
-                                    <uiTable:template>
-                                        <Text text="{main>EUSER}"/>
-                                    </uiTable:template>
-                                </uiTable:Column>
-                                <uiTable:Column hAlign="Center" width="18rem" filterProperty="REVCYCLENAME">
+                                <uiTable:Column hAlign="Center" width="14rem" filterProperty="REVCYCLENAME">
                                     <Label text="{i18n>colJobName}"/>
                                     <uiTable:template>
                                         <Text text="{main>REVCYCLENAME}"/>
                                     </uiTable:template>
                                 </uiTable:Column>
-                                <uiTable:Column hAlign="Center" filterProperty="ATT_FISCAL">
+                                <uiTable:Column hAlign="Center" width="3rem" filterProperty="ATT_FISCAL">
                                     <Label text="{i18n>colFiscalYear}"/>
                                     <uiTable:template>
                                         <Text text="{main>ATT_FISCAL}"/>
                                     </uiTable:template>
                                 </uiTable:Column>
-                                <uiTable:Column hAlign="Center" filterProperty="ATT_QUARTERLY">
+                                <uiTable:Column hAlign="Center" width="4rem" filterProperty="ATT_QUARTERLY">
                                     <Label text="{i18n>colFiscalQuarter}"/>
                                     <uiTable:template>
                                         <Text text="{main>ATT_QUARTERLY}"/>
                                     </uiTable:template>
                                 </uiTable:Column>
-                                <uiTable:Column hAlign="Center" filterProperty="REVIEW_TYPE">
+                                <uiTable:Column hAlign="Center" width="7rem" filterProperty="REVIEW_TYPE">
                                     <Label text="{i18n>colReviewType}"/>
                                     <uiTable:template>
                                         <Text text="{main>REVIEW_TYPE}"/>
                                     </uiTable:template>
                                 </uiTable:Column>
-                                <uiTable:Column hAlign="Center" filterProperty="RCount">
-                                    <Label text="{i18n>colNoOfRoles}"/>
+                                <uiTable:Column hAlign="Center" width="7rem" sortProperty="EUSER" filterProperty="EUSER">
+                                    <Label text="{i18n>colUserName}"/>
+                                    <uiTable:template>
+                                        <Text text="{main>EUSER}"/>
+                                    </uiTable:template>
+                                </uiTable:Column>
+                               <!-- First Name -->
+                                <uiTable:Column
+                                    hAlign="Center"
+                                    width="7rem"
+                                    filterProperty="FIRSTNAME">
+                                    <Label text="{i18n>colFirstName}"/>
+                                    <uiTable:template>
+                                        <Text text="{main>FIRSTNAME}"/>
+                                    </uiTable:template>
+                                </uiTable:Column>
+
+                                <!-- Last Name -->
+                                <uiTable:Column
+                                    hAlign="Center"
+                                    width="7rem"
+                                    filterProperty="LASTNAME">
+                                    <Label text="{i18n>colLastName}"/>
+                                    <uiTable:template>
+                                        <Text text="{main>LASTNAME}"/>
+                                    </uiTable:template>
+                                </uiTable:Column>
+
+                                <!-- User Group -->
+                                <uiTable:Column
+                                    hAlign="Center"
+                                    width="8rem"
+                                    filterProperty="USERGROUP">
+                                    <Label text="{i18n>colUserGroup}"/>
+                                    <uiTable:template>
+                                        <Text text="{main>USERGROUP}"/>
+                                    </uiTable:template>
+                                </uiTable:Column>
+
+                                <!-- Role Owner -->
+                                <uiTable:Column
+                                    hAlign="Center"
+                                    width="8rem"
+                                    filterProperty="ROLEOWNER">
+                                    <Label text="{i18n>colRoleOwner}"/>
+                                    <uiTable:template>
+                                        <Text text="{main>ROLEOWNER}"/>
+                                    </uiTable:template>
+                                </uiTable:Column>
+
+                                <!-- Licensing Category -->
+                                <uiTable:Column
+                                    hAlign="Center"
+                                    width="11rem"
+                                    filterProperty="LIC_CAT">
+                                    <Label text="{i18n>colLicensingCategory}"/>
+                                    <uiTable:template>
+                                        <Text text="{main>LIC_CAT}"/>
+                                    </uiTable:template>
+                                </uiTable:Column>
+
+                                <!-- Valid From -->
+                                <uiTable:Column
+                                    hAlign="Center"
+                                    width="6rem"
+                                    filterProperty="VALID_FROM">
+                                    <Label text="{i18n>colValidFrom}"/>
+                                    <uiTable:template>
+                                        <Text text="{main>VALID_FROM}"/>
+                                    </uiTable:template>
+                                </uiTable:Column>
+
+                                <!-- Valid To -->
+                                <uiTable:Column
+                                    hAlign="Center"
+                                    width="6rem"
+                                    filterProperty="VALID_TO">
+                                    <Label text="{i18n>colValidTo}"/>
+                                    <uiTable:template>
+                                        <Text text="{main>VALID_TO}"/>
+                                    </uiTable:template>
+                                </uiTable:Column>
+
+                                <!-- Role -->
+                                <uiTable:Column
+                                    hAlign="Center"
+                                    width="3rem"
+                                    filterProperty="R_COUNT">
+                                    <Label text="{i18n>colRole}"/>
                                     <uiTable:template>
                                         <Text text="{main>R_COUNT}"/>
                                     </uiTable:template>
                                 </uiTable:Column>
+
+                                <!-- Profile -->
+                                <uiTable:Column
+                                    hAlign="Center"
+                                    width="4rem"
+                                    filterProperty="P_COUNT">
+                                    <Label text="{i18n>colProfile}"/>
+                                    <uiTable:template>
+                                        <Text text="{main>P_COUNT}"/>
+                                    </uiTable:template>
+                                </uiTable:Column>
+
+                                 <!-- Last Logon Date -->
+                                <uiTable:Column
+                                    hAlign="Center"
+                                    width="7rem"
+                                    filterProperty="LAST_LOGON">
+                                    <Label text="{i18n>colLastLogonDate}"/>
+                                    <uiTable:template>
+                                        <Text text="{main>LAST_LOGON}"/>
+                                    </uiTable:template>
+                                </uiTable:Column>
+
+                                <!-- Lock Status -->
+                                <uiTable:Column
+                                    hAlign="Center"
+                                    width="7rem"
+                                    filterProperty="LOCKSTATUS">
+                                    <Label text="{i18n>colLockStatus}"/>
+                                    <uiTable:template>
+                                        <Text text="{main>LOCKSTATUS}"/>
+                                    </uiTable:template>
+                                </uiTable:Column>
+
+                                <!-- Status -->
+                                <uiTable:Column
+                                    hAlign="Center"
+                                    width="7rem"
+                                    filterProperty="STATUS">
+                                    <Label text="{i18n>colStatus}"/>
+                                    <uiTable:template>
+                                        <Text text="{main>STATUS}"/>
+                                    </uiTable:template>
+                                </uiTable:Column>
+
+                                 <!-- Comments -->
+                                <uiTable:Column
+                                    hAlign="Center"
+                                    width="10rem"
+                                    filterProperty="COMMENTS">
+                                    <Label text="{i18n>colComments}"/>
+                                    <uiTable:template>
+                                        <Link
+                                            text="{i18n>lblViewComments}"
+                                            press="onViewComment"
+                                            class="commentBoxLink"/>
+                                    </uiTable:template>
+                                </uiTable:Column>
+
+                               
                             </uiTable:columns>
 
                         </uiTable:Table>

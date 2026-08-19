@@ -107,6 +107,13 @@
           "target": [
             "TargetDisplay"
           ]
+        },
+        {
+          "name": "SoDReviewView",
+          "pattern": "SoDReview/{user}/{jobId}/{connector}/{reviewType}/{fullName}",
+          "target": [
+            "TargetSoDReview"
+          ]
         }
       ],
       "targets": {
@@ -130,6 +137,13 @@
           "clearControlAggregation": false,
           "viewId": "Display",
           "viewName": "Display"
+        },
+        "TargetSoDReview": {
+          "viewType": "XML",
+          "transition": "slide",
+          "clearControlAggregation": false,
+          "viewId": "SoDReview",
+          "viewName": "SoDReview"
         }
       }
     },

@@ -4,7 +4,7 @@
 	xmlns="sap.m"
 	xmlns:uiTable="sap.ui.table"
 	xmlns:core="sap.ui.core">
-	<Page id="reviewPage" showHeader="false" enableScrolling="false">
+	<Page id="reviewPage" showHeader="false" enableScrolling="true">
 		<content>
 			<VBox class="sapUiSmallMarginBottom">
 				<HBox
@@ -38,19 +38,25 @@
 				<ToolbarSpacer/>
 				<Button
 					icon="sap-icon://accept"
-					text="{i18n>btnRetain}"
+					text="{i18n>btnReviewRetain}"
 					type="Transparent"
 					press="onRetain"/>
 				<Button
 					icon="sap-icon://decline"
-					text="{i18n>btnRemove}"
+					text="{i18n>btnReviewRemove}"
 					type="Transparent"
 					press="onRemove"/>
 				<Button
 					icon="sap-icon://refresh"
 					text="{i18n>btnRefresh}"
 					type="Transparent"
+					visible="false"
 					press="onRefresh"/>
+				<Button
+                    icon="sap-icon://comment"
+                    text="{i18n>btnMassComments}"
+                    type="Transparent"
+                    press="onMassComments"/>
 				<Button
 					text="{i18n>btnCancel}"
 					icon="sap-icon://sys-cancel"

@@ -1,0 +1,249 @@
+<mvc:View
+    controllerName="rnow.approval.corner.controller.SoDReview"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:uiTable="sap.ui.table"
+    xmlns:core="sap.ui.core">
+    <Page
+        id="sodReviewPage"
+        showHeader="false">
+        <content>
+            <!-- Header -->
+            <VBox class="sapUiSmallMarginBottom">
+                <HBox
+                    justifyContent="SpaceBetween"
+                    alignItems="Center"
+                    width="100%"
+                    class="headerRow">
+                    <HBox alignItems="Center">
+                        <Button
+                            icon="sap-icon://nav-back"
+                            type="Transparent"
+                            press="onNavBack"/>
+                        <VBox class="sapUiSmallMarginBegin">
+                            <Image
+                                src="{appUser>/logo}"
+                                height="2.75rem"
+                                densityAware="false"
+                                class="reviewNowLogo"/>
+                            <Title
+                                text="{review>/pageTitle}"
+                                level="H3"/>
+                        </VBox>
+                    </HBox>
+                </HBox>
+            </VBox>
+            <!-- Toolbar -->
+            <OverflowToolbar>
+                <Title
+                    text="{i18n>titleSoDReviewItems}"
+                    level="H5"/>
+                <ToolbarSpacer/>
+                <Button
+                    icon="sap-icon://accept"
+                    text="{i18n>btnRetain}"
+                    type="Transparent"
+                    press="onRetain"/>
+                <Button
+                    icon="sap-icon://decline"
+                    text="{i18n>btnRemove}"
+                    type="Transparent"
+                    press="onRemove"/>
+                <Button
+                    icon="sap-icon://accept"
+                    text="{i18n>btnMitRetain}"
+                    type="Transparent"
+                    press="onMitRetain"/>
+                <Button
+                    icon="sap-icon://decline"
+                    text="{i18n>btnMitRemove}"
+                    type="Transparent"
+                    press="onMitRemove"/>
+                    <Button
+                    icon="sap-icon://add-folder"
+                    text="{i18n>btnMitExtend}"
+                    type="Transparent"
+                    press="onMitExtend"/>
+                <Button
+                    icon="sap-icon://comment"
+                    text="{i18n>btnMassComments}"
+                    type="Transparent"
+                    press="onMassComments"/>
+                <Button
+                    icon="sap-icon://refresh"
+                    text="{i18n>btnRefresh}"
+                    type="Transparent"
+                    visible="false"
+                    press="onRefresh"/>
+                <Button
+                    text="{i18n>btnCancel}"
+                    icon="sap-icon://sys-cancel"
+                    type="Transparent"
+                    press="onCancel"/>
+            </OverflowToolbar>
+            <!-- SOD Review Table -->
+            <uiTable:Table
+                id="sodReviewTable"
+                rows="{review>/Items}"
+                selectionMode="MultiToggle"
+                enableBusyIndicator="true"
+                enableColumnReordering="true"
+                visibleRowCountMode="Auto"
+                rowHeight="40">
+                <uiTable:columns>
+                    <!-- Risk ID -->
+                    <uiTable:Column
+                        hAlign="Center"
+                        sortProperty="RiskId"
+                        filterProperty="RiskId"
+                        width="5rem">
+                        <Label text="{i18n>displayRiskId}"/>
+                        <uiTable:template>
+                            <Text text="{review>RiskId}"/>
+                        </uiTable:template>
+                    </uiTable:Column>
+                    <!-- Risk Description -->
+                    <uiTable:Column
+                        hAlign="Center"
+                        sortProperty="RiskDescn"
+                        filterProperty="RiskDescn"
+                        width="24rem">
+                        <Label text="{i18n>displayRiskDescription}"/>
+                        <uiTable:template>
+                            <Text text="{review>RiskDescn}"/>
+                        </uiTable:template>
+                    </uiTable:Column>
+                    <!-- Risk Level -->
+                    <uiTable:Column
+                        hAlign="Center"
+                        sortProperty="RiskLevel"
+                        filterProperty="RiskLevel"
+                        width="6rem">
+                        <Label text="{i18n>displayRiskLevel}"/>
+                        <uiTable:template>
+                            <Text text="{review>RiskLevel}"/>
+                        </uiTable:template>
+                    </uiTable:Column>
+                    <!-- Function ID -->
+                    <uiTable:Column
+                        hAlign="Center"
+                        sortProperty="Function"
+                        filterProperty="Function"
+                        width="6rem">
+                        <Label text="{i18n>displayFunctionId}"/>
+                        <uiTable:template>
+                            <Text text="{review>Function}"/>
+                        </uiTable:template>
+                    </uiTable:Column>
+                    <!-- Function Description -->
+                    <uiTable:Column
+                        hAlign="Center"
+                        sortProperty="FunctDesc"
+                        filterProperty="FunctDesc"
+                        width="15rem">
+                        <Label text="{i18n>displayFunctionDescription}"/>
+                        <uiTable:template>
+                            <Text text="{review>FunctDesc}"/>
+                        </uiTable:template>
+                    </uiTable:Column>
+                    <!-- Migration ID -->
+                    <uiTable:Column
+                        hAlign="Center"
+                        sortProperty="Mcid"
+                        filterProperty="Mcid"
+                        width="5rem">
+                        <Label text="{i18n>displayMigrationId}"/>
+                        <uiTable:template>
+                            <Text text="{review>Mcid}"/>
+                        </uiTable:template>
+                    </uiTable:Column>
+                    <!-- Conflict -->
+                    <uiTable:Column
+                        hAlign="Center"
+                        sortProperty="LineCount"
+                        filterProperty="LineCount"
+                        width="6rem">
+                        <Label text="{i18n>displayConflict}"/>
+                        <uiTable:template>
+                            <Link
+                                text="{review>LineCount}"
+                                press="onConflictPress"/>
+                        </uiTable:template>
+                    </uiTable:Column>
+                    <!-- Risk Action -->
+                    <uiTable:Column
+                        hAlign="Center"
+                        width="7.5rem">
+                        <Label text="{i18n>displayRiskAction}"/>
+                        <uiTable:template>
+                            <Select
+                                width="100%"
+                                selectedKey="{review>Action}"
+                                change="onRiskActionChange">
+                                <core:Item
+                                    key="RT"
+                                    text="{i18n>actionRetain}"/>
+                                <core:Item
+                                    key="RM"
+                                    text="{i18n>actionRemove}"/>
+                            </Select>
+                        </uiTable:template>
+                    </uiTable:Column>
+                    <!-- Mit. Action -->
+                    <uiTable:Column
+                        hAlign="Center"
+                        width="7.5rem">
+                        <Label text="{i18n>displayMitAction}"/>
+                        <uiTable:template>
+                            <Select
+                                width="100%"
+                                selectedKey="{review>MidAction}"
+                                change="onMitActionChange">
+                                <core:Item
+                                    key="RT"
+                                    text="{i18n>actionRetain}"/>
+                                <core:Item
+                                    key="RM"
+                                    text="{i18n>actionRemove}"/>
+                                <core:Item
+                                    key="EX"
+                                    text="{i18n>actionExtend}"/>
+                            </Select>
+                        </uiTable:template>
+                    </uiTable:Column>
+                    <!-- Comments -->
+                    <uiTable:Column
+                        hAlign="Center"
+                        width="150px">
+                        <Label text="{i18n>displayComment}"/>
+                        <uiTable:template>
+                            <Input
+                                value="{review>Comment}"
+                                valueLiveUpdate="true"
+                                valueState="{review>CommentState}"
+                                valueStateText="{i18n>commentMandatory}"
+                                placeholder="{i18n>commentPlaceholder}"
+                                liveChange="onCommentChange"/>
+                        </uiTable:template>
+                    </uiTable:Column>
+                </uiTable:columns>
+            </uiTable:Table>
+        </content>
+        <!-- Footer -->
+        <footer>
+            <OverflowToolbar>
+                <ToolbarSpacer/>
+                <Button
+                    text="{i18n>btnSave}"
+                    icon="sap-icon://save"
+                    type="Emphasized"
+                    press="onSave"/>
+                <Button
+                    text="{i18n>btnSubmit}"
+                    icon="sap-icon://accept"
+                    type="Accept"
+                    press="onSubmit"/>
+            </OverflowToolbar>
+        </footer>
+    </Page>
+</mvc:View>

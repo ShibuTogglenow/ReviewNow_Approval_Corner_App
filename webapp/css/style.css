@@ -35,3 +35,26 @@
 .criticalRow td {
     background-color: #ff988c !important;
 }
+
+.commentBoxLink {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border: 1px solid #8c8c8c;
+    border-radius: 0.125rem;
+    background-color: #f4e150c3;
+    color: #000000 !important;
+    text-decoration: none !important;
+    font-size: 0.8125rem;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.15s ease-in-out;
+}
+
+.commentBoxLink:hover {
+    background-color: #E6C900;
+    text-decoration: none !important;
+}
+
+.commentBoxLink:active {
+    background-color: #CCB200;
+}
