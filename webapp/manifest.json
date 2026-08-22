@@ -155,7 +155,7 @@
         "TargetSoDDisplay": {
           "viewType": "XML",
           "transition": "slide",
-          "clearControlAggregation": true,
+          "clearControlAggregation": false,
           "viewId": "SoDDisplay",
           "viewName": "SoDDisplay"
         }

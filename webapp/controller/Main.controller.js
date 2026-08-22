@@ -459,6 +459,18 @@ sap.ui.define([
                 oInput.setValueState(sap.ui.core.ValueState.None);
                 oInput.setValueStateText("");
             }
+            this._destroyReviewerVHDialog();
+        },
+
+        onReviewerVHCancel: function() {
+            this._destroyReviewerVHDialog();
+        },
+        
+        _destroyReviewerVHDialog: function() {
+            if (this._oReviewerVH) {
+                this._oReviewerVH.destroy();
+                this._oReviewerVH = null;
+            }
         },
 
         onReassign: function() {

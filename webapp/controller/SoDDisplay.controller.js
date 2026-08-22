@@ -64,6 +64,8 @@ sap.ui.define([
         _loadReviewData: function() {
             var oModel = this._getODataModel();
             var oBundle = this.getView().getModel("i18n").getResourceBundle();
+            this._reviewRequestId = (this._reviewRequestId || 0) + 1;
+            var iRequestId = this._reviewRequestId;
 
             oModel.setUseBatch(false);
             this.getView().setBusy(true);
@@ -75,12 +77,18 @@ sap.ui.define([
                     new Filter("Connector", FilterOperator.EQ, this._sConnector)
                 ],
                 success: function(oData) {
+                    if (iRequestId !== this._reviewRequestId) {
+                        return;
+                    }
                     var aItems = oData.results || [];
 
                     this._getSoDDisplayModel().setProperty("/Items", aItems);
                     this.getView().setBusy(false);
                 }.bind(this),
                 error: function() {
+                    if (iRequestId !== this._reviewRequestId) {
+                        return;
+                    }
                     this.getView().setBusy(false);
                     MessageToast.show(oBundle.getText("msgLoadError", ["SOD review details"]));
                 }.bind(this)

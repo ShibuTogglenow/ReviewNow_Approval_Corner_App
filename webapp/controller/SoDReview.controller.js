@@ -8,12 +8,17 @@ sap.ui.define([
 ], function(Controller, JSONModel, Filter, FilterOperator, MessageToast, MessageBox) {
     "use strict";
     return Controller.extend("rnow.approval.corner.controller.SoDReview", {
-
         onInit: function() {
             this.getOwnerComponent().getRouter().getRoute("SoDReviewView").attachPatternMatched(this._onRouteMatched, this);
-            var oUsageModel = new JSONModel({ title: "", Items: [] });
+            var oUsageModel = new JSONModel({
+                title: "",
+                Items: []
+            });
             this.getView().setModel(oUsageModel, "usage");
-            var oConflictModel = new JSONModel({ title: "", Items: [] });
+            var oConflictModel = new JSONModel({
+                title: "",
+                Items: []
+            });
             this.getView().setModel(oConflictModel, "conflict");
         },
 
@@ -86,6 +91,8 @@ sap.ui.define([
         _loadReviewData: function(bShowToast) {
             var oModel = this._getODataModel();
             var oBundle = this.getView().getModel("i18n").getResourceBundle();
+            this._reviewRequestId = (this._reviewRequestId || 0) + 1;
+            var iRequestId = this._reviewRequestId;
             oModel.setUseBatch(false);
             this.getView().setBusy(true);
             oModel.read("/RNOW_ReviewDetailSet", {
@@ -95,6 +102,9 @@ sap.ui.define([
                     new Filter("Connector", FilterOperator.EQ, this._sConnector)
                 ],
                 success: function(oData) {
+                    if (iRequestId !== this._reviewRequestId) {
+                        return;
+                    }
                     var aItems = oData.results || [];
                     var aOriginalItems = this._snapshotEditableItems(aItems);
                     this._bReviewChanged = false;
@@ -110,6 +120,9 @@ sap.ui.define([
                     }
                 }.bind(this),
                 error: function() {
+                    if (iRequestId !== this._reviewRequestId) {
+                        return;
+                    }
                     this.getView().setBusy(false);
                     MessageToast.show(oBundle.getText("msgLoadError", ["SOD review details"]));
                 }.bind(this)
@@ -146,7 +159,8 @@ sap.ui.define([
                 var bActionChanged = (oItem.Action || "") !== (oOriginal.Action || "");
                 var bMitActionChanged = (oItem.MidAction || "") !== (oOriginal.MidAction || "");
                 var bCommentChanged = (oItem.Comment || "") !== (oOriginal.Comment || "");
-                var bChanged = bActionChanged || bMitActionChanged || bCommentChanged;
+                var bMitigationChanged = (oItem.Mcid || "") !== (oOriginal.Mcid || "");
+                var bChanged = bActionChanged || bMitActionChanged || bMitigationChanged || bCommentChanged;
                 if (!bChanged) continue;
                 if (!this._validateCommentForRow(oModel, "/Items/" + i)) {
                     var oBundle = this.getView().getModel("i18n").getResourceBundle();
@@ -163,6 +177,7 @@ sap.ui.define([
                 return {
                     Action: oItem.Action || "",
                     MidAction: oItem.MidAction || "",
+                    Mcid: oItem.Mcid || "",
                     Comment: oItem.Comment || ""
                 };
             });
@@ -201,7 +216,9 @@ sap.ui.define([
                     }),
                     endButton: new sap.m.Button({
                         text: oBundle.getText("btnCancel"),
-                        press: function() { this._oSubmitDialog.close(); }.bind(this)
+                        press: function() {
+                            this._oSubmitDialog.close();
+                        }.bind(this)
                     })
                 });
                 this.getView().addDependent(this._oSubmitDialog);
@@ -222,7 +239,9 @@ sap.ui.define([
                 success: function(oData) {
                     oView.setBusy(false);
                     MessageBox.success((oData && oData.Message) || oBundle.getText("msgReviewSubmitted"), {
-                        onClose: function() { this.onNavBack(); }.bind(this)
+                        onClose: function() {
+                            this.onNavBack();
+                        }.bind(this)
                     });
                     this._markItemsAsSaved(aChangedItems);
                     this._aPendingSubmitItems = null;
@@ -301,7 +320,9 @@ sap.ui.define([
                     oView.setBusy(false);
                     MessageToast.show((oData && oData.Message) || oBundle.getText("msgReviewSaved"));
                     this._markItemsAsSaved(aChangedItems);
-                    setTimeout(function() { this.onNavBack(); }.bind(this), 1500);
+                    setTimeout(function() {
+                        this.onNavBack();
+                    }.bind(this), 1500);
                 }.bind(this),
                 error: function(oError) {
                     oView.setBusy(false);
@@ -356,6 +377,7 @@ sap.ui.define([
 
         onMitActionChange: function(oEvent) {
             var oContext = oEvent.getSource().getBindingContext("review");
+            this._bReviewChanged = true;
             this._validateCommentForRow(oContext.getModel(), oContext.getPath());
         },
 
@@ -399,7 +421,9 @@ sap.ui.define([
                     }),
                     endButton: new sap.m.Button({
                         text: oBundle.getText("btnCancel"),
-                        press: function() { this._oMassCommentDialog.close(); }.bind(this)
+                        press: function() {
+                            this._oMassCommentDialog.close();
+                        }.bind(this)
                     })
                 });
                 this.getView().addDependent(this._oMassCommentDialog);
@@ -459,171 +483,108 @@ sap.ui.define([
             return !bError;
         },
 
-        onConflictPress: function(oEvent) {
-            var oContext = oEvent.getSource().getBindingContext("review");
-            var oItem = oContext.getObject();
-            console.log("Selected SOD conflict:", oItem);
-        },
-
         onMitigationVHRequest: function(oEvent) {
             this._oMitigationInput = oEvent.getSource();
-            if (!this._oMitigationVHDialog) {
-                this._oMitigationVHDialog = sap.ui.xmlfragment(
-                    this.getView().getId(),
-                    "rnow.approval.corner.view.fragments.MitigationVH",
-                    this
-                );
-                this.getView().addDependent(this._oMitigationVHDialog);
-            }
+            this._oMitigationVHDialog = sap.ui.xmlfragment(this.getView().getId(), "rnow.approval.corner.view.fragments.MitigationVH", this);
+            this.getView().addDependent(this._oMitigationVHDialog);
             this._oMitigationVHDialog.open();
         },
 
-        onMitigationVHSearch: function (oEvent) {
-    var sValue = oEvent.getParameter("value") || "";
-    var oBinding = oEvent.getSource().getBinding("items");
-
-    if (!oBinding) {
-        return;
-    }
-
-    if (!sValue.trim()) {
-        oBinding.filter([]);
-        return;
-    }
-
-    var oFilter = new sap.ui.model.Filter(
-        "ACCONTROLID",
-        sap.ui.model.FilterOperator.Contains,
-        sValue.trim()
-    );
-
-    oBinding.filter([oFilter]);
-},
+        onMitigationVHSearch: function(oEvent) {
+            var sValue = oEvent.getParameter("value") || "";
+            var oBinding = oEvent.getSource().getBinding("items");
+            if (!oBinding) {
+                return;
+            }
+            if (!sValue.trim()) {
+                oBinding.filter([]);
+                return;
+            }
+            var oFilter = new Filter(
+                "ACCONTROLID",
+                FilterOperator.Contains,
+                sValue.trim()
+            );
+            oBinding.filter([oFilter]);
+        },
 
         onMitigationVHConfirm: function(oEvent) {
             var oSelectedItem = oEvent.getParameter("selectedItem");
-            if (!oSelectedItem || !this._oMitigationInput) {
-                return;
+            if (oSelectedItem && this._oMitigationInput) {
+                var oSelectedData = oSelectedItem.getBindingContext().getObject();
+                var oInputContext = this._oMitigationInput.getBindingContext("review");
+                if (oInputContext) {
+                    this._bReviewChanged = true;
+                    oInputContext.getModel().setProperty(
+                        oInputContext.getPath() + "/Mcid",
+                        oSelectedData.ACCONTROLID || ""
+                    );
+                }
             }
-            var oSelectedData =
-                oSelectedItem.getBindingContext().getObject();
-            var oInputContext =
-                this._oMitigationInput.getBindingContext("review");
-            if (oInputContext) {
-                oInputContext.getModel().setProperty(
-                    oInputContext.getPath() + "/Mcid",
-                    oSelectedData.ACCONTROLID || ""
-                );
-            }
-            this._oMitigationVHDialog.close();
-            this._oMitigationInput = null;
+            this._destroyMitigationVHDialog();
         },
 
-        onMitigationVHCancel: function() {
+        onMitigationVHCancel: function(oEvent) {
+            this._destroyMitigationVHDialog();
+        },
+
+        _destroyMitigationVHDialog: function() {
             if (this._oMitigationVHDialog) {
-                this._oMitigationVHDialog.close();
+                this._oMitigationVHDialog.destroy();
+                this._oMitigationVHDialog = null;
             }
             this._oMitigationInput = null;
         },
 
         onConflictPress: function(oEvent) {
-
-            var oConflict = oEvent
-                .getSource()
-                .getBindingContext("review")
-                .getObject();
-
+            var oConflict = oEvent.getSource().getBindingContext("review").getObject();
             this._oSelectedConflict = oConflict;
-
             if (!this._oConflictDialog) {
-
                 this._oConflictDialog = sap.ui.xmlfragment(
                     this.getView().getId(),
                     "rnow.approval.corner.view.fragments.ConflictAnalysisDialog",
                     this
                 );
-
                 this.getView().addDependent(this._oConflictDialog);
             }
-
-            var oBundle = this.getView()
-                .getModel("i18n")
-                .getResourceBundle();
-
-            this._getConflictModel().setProperty(
-                "/title",
-                oBundle.getText(
-                    "conflictTitle",
-                    [oConflict.RiskId || ""]
-                )
-            );
-
+            var oBundle = this.getView().getModel("i18n").getResourceBundle();
+            this._getConflictModel().setProperty("/title", oBundle.getText("conflictTitle", [oConflict.RiskId || ""]));
             this._loadConflictData(oConflict);
-
             this._oConflictDialog.open();
         },
 
-       _loadConflictData: function(oConflict) {
+        _loadConflictData: function(oConflict) {
+            var oModel = this._getODataModel();
+            this._conflictRequestId = (this._conflictRequestId || 0) + 1;
+            var iRequestId = this._conflictRequestId;
+            oModel.setUseBatch(false);
+            this._oConflictDialog.setBusy(true);
+            var aFilters = [
+                new Filter("GUSER", FilterOperator.EQ, this._sUser),
+                new Filter("JOB_ID", FilterOperator.EQ, this._sJobId),
+                new Filter("RISK", FilterOperator.EQ, oConflict.RiskId)
+            ];
+            oModel.read("/utilized_TcodesSet", {
+                filters: aFilters,
+                success: function(oData) {
+                    if (iRequestId !== this._conflictRequestId) {
+                        return;
+                    }
+                    var aItems = oData.results || [];
+                    this._getConflictModel().setProperty("/Items", aItems);
+                    this._oConflictDialog.setBusy(false);
+                }.bind(this),
+                error: function(oError) {
+                    if (iRequestId !== this._conflictRequestId) {
+                        return;
+                    }
+                    this._oConflictDialog.setBusy(false);
+                    var oBundle = this.getView().getModel("i18n").getResourceBundle();
+                    MessageToast.show(oBundle.getText("msgLoadError", ["conflict details"]));
+                }.bind(this)
+            });
+        },
 
-    var oModel = this._getODataModel();
-
-    oModel.setUseBatch(false);
-
-    this._oConflictDialog.setBusy(true);
-
-    var aFilters = [
-        new Filter(
-            "GUSER",
-            FilterOperator.EQ,
-            this._sUser
-        ),
-        new Filter(
-            "JOB_ID",
-            FilterOperator.EQ,
-            this._sJobId
-        ),
-        new Filter(
-            "RISK",
-            FilterOperator.EQ,
-            oConflict.RiskId
-        )
-    ];
-
-    oModel.read("/utilized_TcodesSet", {
-
-        filters: aFilters,
-
-        success: function(oData) {
-
-            var aItems = oData.results || [];
-
-            this._getConflictModel().setProperty(
-                "/Items",
-                aItems
-            );
-
-            this._oConflictDialog.setBusy(false);
-
-        }.bind(this),
-
-        error: function(oError) {
-
-            this._oConflictDialog.setBusy(false);
-
-            var oBundle = this.getView()
-                .getModel("i18n")
-                .getResourceBundle();
-
-            MessageToast.show(
-                oBundle.getText(
-                    "msgLoadError",
-                    ["conflict details"]
-                )
-            );
-
-        }.bind(this)
-    });
-},
         onConflictDialogClose: function() {
             if (this._oConflictDialog) {
                 this._oConflictDialog.close();
@@ -643,6 +604,14 @@ sap.ui.define([
                 this._oMassCommentDialog.destroy();
                 this._oMassCommentDialog = null;
                 this._oMassCommentTextArea = null;
+            }
+            if (this._oMitigationVHDialog) {
+                this._oMitigationVHDialog.destroy();
+                this._oMitigationVHDialog = null;
+            }
+            if (this._oConflictDialog) {
+                this._oConflictDialog.destroy();
+                this._oConflictDialog = null;
             }
         }
 
