@@ -13,6 +13,8 @@ sap.ui.define([
             this.getOwnerComponent().getRouter().getRoute("SoDReviewView").attachPatternMatched(this._onRouteMatched, this);
             var oUsageModel = new JSONModel({ title: "", Items: [] });
             this.getView().setModel(oUsageModel, "usage");
+            var oConflictModel = new JSONModel({ title: "", Items: [] });
+            this.getView().setModel(oConflictModel, "conflict");
         },
 
         _getReviewModel: function() {
@@ -25,6 +27,10 @@ sap.ui.define([
 
         _getODataModel: function() {
             return this.getOwnerComponent().getModel();
+        },
+
+        _getConflictModel: function() {
+            return this.getView().getModel("conflict");
         },
 
         _getCurrentUser: function() {
@@ -73,7 +79,8 @@ sap.ui.define([
                 ],
                 success: function(oData) {
                     var aItems = oData.results || [];
-                    var aOriginalItems = JSON.parse(JSON.stringify(aItems));
+                    var aOriginalItems = this._snapshotEditableItems(aItems);
+                    this._bReviewChanged = false;
                     var oReviewModel = this._getReviewModel();
                     oReviewModel.setProperty("/Items", aItems);
                     oReviewModel.setProperty("/OriginalItems", aOriginalItems);
@@ -111,6 +118,7 @@ sap.ui.define([
         },
 
         _collectChangedItems: function() {
+            if (!this._bReviewChanged) return [];
             var oModel = this._getReviewModel();
             var aItems = oModel.getProperty("/Items") || [];
             var aOriginalItems = oModel.getProperty("/OriginalItems") || [];
@@ -131,6 +139,16 @@ sap.ui.define([
                 aChangedItems.push(oItem);
             }
             return aChangedItems;
+        },
+
+        _snapshotEditableItems: function(aItems) {
+            return aItems.map(function(oItem) {
+                return {
+                    Action: oItem.Action || "",
+                    MidAction: oItem.MidAction || "",
+                    Comment: oItem.Comment || ""
+                };
+            });
         },
 
         _openSubmitDialog: function() {
@@ -276,11 +294,8 @@ sap.ui.define([
         },
 
         _markItemsAsSaved: function(aChangedItems) {
-            aChangedItems.forEach(function(oItem) {
-                oItem.OriginalAction = oItem.Action;
-                oItem.OriginalMidAction = oItem.MidAction;
-                oItem.OriginalComment = oItem.Comment;
-            });
+            var oModel = this._getReviewModel();
+            oModel.setProperty("/OriginalItems", this._snapshotEditableItems(oModel.getProperty("/Items") || []));
         },
 
         _getErrorMessage: function(oError, sFallback) {
@@ -380,6 +395,7 @@ sap.ui.define([
         _applyMassComment: function(sComment) {
             var oTable = this.byId("sodReviewTable");
             var oModel = this.getView().getModel("review");
+            this._bReviewChanged = true;
             (this._aMassCommentIndices || []).forEach(function(iIndex) {
                 var sPath = oTable.getContextByIndex(iIndex).getPath();
                 oModel.setProperty(sPath + "/Comment", sComment);
@@ -397,6 +413,7 @@ sap.ui.define([
                 MessageToast.show(oBundle.getText("msgSelectRecord"));
                 return;
             }
+            this._bReviewChanged = true;
             aSelectedIndices.forEach(function(iIndex) {
                 var sPath = oTable.getContextByIndex(iIndex).getPath();
                 oModel.setProperty(sPath + "/" + sProperty, sAction);
@@ -406,11 +423,13 @@ sap.ui.define([
 
         onRiskActionChange: function(oEvent) {
             var oContext = oEvent.getSource().getBindingContext("review");
+            this._bReviewChanged = true;
             this._validateCommentForRow(oContext.getModel(), oContext.getPath());
         },
 
         onCommentChange: function(oEvent) {
             var oContext = oEvent.getSource().getBindingContext("review");
+            this._bReviewChanged = true;
             this._validateCommentForRow(oContext.getModel(), oContext.getPath());
         },
 
@@ -427,6 +446,171 @@ sap.ui.define([
             var oContext = oEvent.getSource().getBindingContext("review");
             var oItem = oContext.getObject();
             console.log("Selected SOD conflict:", oItem);
+        },
+
+        onMitigationVHRequest: function(oEvent) {
+            this._oMitigationInput = oEvent.getSource();
+            if (!this._oMitigationVHDialog) {
+                this._oMitigationVHDialog = sap.ui.xmlfragment(
+                    this.getView().getId(),
+                    "rnow.approval.corner.view.fragments.MitigationVH",
+                    this
+                );
+                this.getView().addDependent(this._oMitigationVHDialog);
+            }
+            this._oMitigationVHDialog.open();
+        },
+
+        onMitigationVHSearch: function (oEvent) {
+    var sValue = oEvent.getParameter("value") || "";
+    var oBinding = oEvent.getSource().getBinding("items");
+
+    if (!oBinding) {
+        return;
+    }
+
+    if (!sValue.trim()) {
+        oBinding.filter([]);
+        return;
+    }
+
+    var oFilter = new sap.ui.model.Filter(
+        "ACCONTROLID",
+        sap.ui.model.FilterOperator.Contains,
+        sValue.trim()
+    );
+
+    oBinding.filter([oFilter]);
+},
+
+        onMitigationVHConfirm: function(oEvent) {
+            var oSelectedItem = oEvent.getParameter("selectedItem");
+            if (!oSelectedItem || !this._oMitigationInput) {
+                return;
+            }
+            var oSelectedData =
+                oSelectedItem.getBindingContext().getObject();
+            var oInputContext =
+                this._oMitigationInput.getBindingContext("review");
+            if (oInputContext) {
+                oInputContext.getModel().setProperty(
+                    oInputContext.getPath() + "/Mcid",
+                    oSelectedData.ACCONTROLID || ""
+                );
+            }
+            this._oMitigationVHDialog.close();
+            this._oMitigationInput = null;
+        },
+
+        onMitigationVHCancel: function() {
+            if (this._oMitigationVHDialog) {
+                this._oMitigationVHDialog.close();
+            }
+            this._oMitigationInput = null;
+        },
+
+        onConflictPress: function(oEvent) {
+
+            var oConflict = oEvent
+                .getSource()
+                .getBindingContext("review")
+                .getObject();
+
+            this._oSelectedConflict = oConflict;
+
+            if (!this._oConflictDialog) {
+
+                this._oConflictDialog = sap.ui.xmlfragment(
+                    this.getView().getId(),
+                    "rnow.approval.corner.view.fragments.ConflictAnalysisDialog",
+                    this
+                );
+
+                this.getView().addDependent(this._oConflictDialog);
+            }
+
+            var oBundle = this.getView()
+                .getModel("i18n")
+                .getResourceBundle();
+
+            this._getConflictModel().setProperty(
+                "/title",
+                oBundle.getText(
+                    "conflictTitle",
+                    [oConflict.RiskId || ""]
+                )
+            );
+
+            this._loadConflictData(oConflict);
+
+            this._oConflictDialog.open();
+        },
+
+       _loadConflictData: function(oConflict) {
+
+    var oModel = this._getODataModel();
+
+    oModel.setUseBatch(false);
+
+    this._oConflictDialog.setBusy(true);
+
+    var aFilters = [
+        new Filter(
+            "GUSER",
+            FilterOperator.EQ,
+            this._sUser
+        ),
+        new Filter(
+            "JOB_ID",
+            FilterOperator.EQ,
+            this._sJobId
+        ),
+        new Filter(
+            "RISK",
+            FilterOperator.EQ,
+            oConflict.RiskId
+        )
+    ];
+
+    oModel.read("/utilized_TcodesSet", {
+
+        filters: aFilters,
+
+        success: function(oData) {
+
+            var aItems = oData.results || [];
+
+            this._getConflictModel().setProperty(
+                "/Items",
+                aItems
+            );
+
+            this._oConflictDialog.setBusy(false);
+
+        }.bind(this),
+
+        error: function(oError) {
+
+            this._oConflictDialog.setBusy(false);
+
+            var oBundle = this.getView()
+                .getModel("i18n")
+                .getResourceBundle();
+
+            MessageToast.show(
+                oBundle.getText(
+                    "msgLoadError",
+                    ["conflict details"]
+                )
+            );
+
+        }.bind(this)
+    });
+},
+        onConflictDialogClose: function() {
+            if (this._oConflictDialog) {
+                this._oConflictDialog.close();
+            }
         },
 
         onExit: function() {

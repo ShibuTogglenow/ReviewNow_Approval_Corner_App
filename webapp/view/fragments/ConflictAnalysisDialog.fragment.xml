@@ -1,0 +1,142 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:uiTable="sap.ui.table">
+
+    <Dialog
+        id="conflictDialog"
+        title="{conflict>/title}"
+        contentWidth="100%"
+        contentHeight="550px"
+        resizable="true"
+        draggable="true">
+
+        <content>
+
+            <VBox
+                fitContainer="true"
+                height="100%">
+
+                <uiTable:Table
+                    id="conflictTable"
+                    rows="{conflict>/Items}"
+                    width="100%"
+                    selectionMode="None"
+                    enableBusyIndicator="true"
+                    enableColumnReordering="true"
+                    alternateRowColors="true"
+                    visibleRowCountMode="Auto"
+                    minAutoRowCount="15">
+
+                    <uiTable:columns>
+
+                        <!-- Business Process / Function -->
+                        <uiTable:Column
+                            width="9rem"
+                            sortProperty="FUNCTION"
+                            filterProperty="FUNCTION">
+
+                            <Label text="{i18n>labelBusinessProcess}"/>
+
+                            <uiTable:template>
+                                <Text text="{conflict>FUNCTION}"/>
+                            </uiTable:template>
+
+                        </uiTable:Column>
+
+
+                        <!-- Role Name -->
+                        <uiTable:Column
+                            width="18rem"
+                            sortProperty="ROLE"
+                            filterProperty="ROLE">
+
+                            <Label text="{i18n>labelRoleName}"/>
+
+                            <uiTable:template>
+                                <Text text="{conflict>ROLE}"/>
+                            </uiTable:template>
+
+                        </uiTable:Column>
+
+
+                        <!-- Role Description -->
+                        <uiTable:Column
+                            width="24rem"
+                            sortProperty="ROLE_DEC"
+                            filterProperty="ROLE_DEC">
+
+                            <Label text="{i18n>labelRoleDescription}"/>
+
+                            <uiTable:template>
+                                <Text text="{conflict>ROLE_DEC}"/>
+                            </uiTable:template>
+
+                        </uiTable:Column>
+
+
+                        <!-- Identifier -->
+                        <uiTable:Column
+                            width="7rem"
+                            hAlign="Center"
+                            sortProperty="IDENTIFIER"
+                            filterProperty="IDENTIFIER">
+
+                            <Label text="{i18n>labelIdentifier}"/>
+
+                            <uiTable:template>
+                                <Text text="{conflict>IDENTIFIER}"/>
+                            </uiTable:template>
+
+                        </uiTable:Column>
+
+
+                        <!-- T-Code -->
+                        <uiTable:Column
+                            width="7rem"
+                            sortProperty="TCODE1"
+                            filterProperty="TCODE1">
+
+                            <Label text="{i18n>labelTcode}"/>
+
+                            <uiTable:template>
+                                <Text text="{conflict>TCODE1}"/>
+                            </uiTable:template>
+
+                        </uiTable:Column>
+
+
+                        <!-- T-Code Description -->
+                        <uiTable:Column
+                            width="24rem"
+                            sortProperty="TDESC"
+                            filterProperty="TDESC">
+
+                            <Label text="{i18n>labelTcodeDescription}"/>
+
+                            <uiTable:template>
+                                <Text text="{conflict>TDESC}"/>
+                            </uiTable:template>
+
+                        </uiTable:Column>
+
+                    </uiTable:columns>
+
+                </uiTable:Table>
+
+            </VBox>
+
+        </content>
+
+        <buttons>
+
+            <Button
+                text="{i18n>btnClose}"
+                icon="sap-icon://decline"
+                press="onConflictDialogClose"/>
+
+        </buttons>
+
+    </Dialog>
+
+</core:FragmentDefinition>

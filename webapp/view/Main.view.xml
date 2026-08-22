@@ -225,7 +225,7 @@
                                 <!-- Last Logon Date -->
                                 <uiTable:Column
                                     hAlign="Center"
-                                    width="7rem"
+                                    width="8.5rem"
                                     filterProperty="LastLogon">
                                     <Label text="{i18n>colLastLogonDate}"/>
                                     <uiTable:template>
@@ -431,7 +431,7 @@
                                 <!-- Last Logon Date -->
                                 <uiTable:Column
                                     hAlign="Center"
-                                    width="7rem"
+                                    width="8.5rem"
                                     filterProperty="LastLogon">
                                     <Label text="{i18n>colLastLogonDate}"/>
                                     <uiTable:template>
@@ -644,18 +644,17 @@
                                 <uiTable:Column
                                     hAlign="Center"
                                     width="7rem"
-                                    filterProperty="STATUS">
+                                    filterProperty="REVIEWSTATUS">
                                     <Label text="{i18n>colStatus}"/>
                                     <uiTable:template>
-                                        <Text text="{main>STATUS}"/>
+                                        <Text text="{main>REVIEWSTATUS}"/>
                                     </uiTable:template>
                                 </uiTable:Column>
 
                                  <!-- Comments -->
                                 <uiTable:Column
                                     hAlign="Center"
-                                    width="10rem"
-                                    filterProperty="COMMENTS">
+                                    width="10rem">
                                     <Label text="{i18n>colComments}"/>
                                     <uiTable:template>
                                         <Link

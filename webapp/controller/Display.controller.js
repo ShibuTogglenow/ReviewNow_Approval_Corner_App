@@ -3,13 +3,11 @@ sap.ui.define([
     "sap/ui/model/json/JSONModel",
     "sap/ui/model/Filter",
     "sap/ui/model/FilterOperator",
-    "sap/m/MessageToast",
-    "sap/m/MessageBox"
-], function(Controller, JSONModel, Filter, FilterOperator, MessageToast, MessageBox) {
+    "sap/m/MessageToast"
+], function(Controller, JSONModel, Filter, FilterOperator, MessageToast) {
     "use strict";
     return Controller.extend("rnow.approval.corner.controller.Display", {
         onInit: function() {
-            // Listen for route changes and initialize the local usage model.
             this.getOwnerComponent().getRouter().getRoute("DisplayView").attachPatternMatched(this._onRouteMatched, this);
             var oUsageModel = new JSONModel({
                 title: "",
@@ -34,7 +32,7 @@ sap.ui.define([
             this._sConnector = decodeURIComponent(oArgs.connector);
             this._sReviewType = decodeURIComponent(oArgs.reviewType);
             this._sFullName = decodeURIComponent(oArgs.fullName);
-            var oReviewModel = new JSONModel({
+            var oFullAccessDisplayModel = new JSONModel({
                 pageTitle: this._sReviewType +
                     " Review of: " +
                     this._sUser +
@@ -44,13 +42,13 @@ sap.ui.define([
                     this._sJobId,
                 Items: []
             });
-            this.getView().setModel(oReviewModel, "Display");
+            this.getView().setModel(oFullAccessDisplayModel, "fullAccessDisplayModel");
             this._loadDisplayData();
         },
 
-        _loadDisplayData: function(bShowToast) {
+        _loadDisplayData: function() {
             // Load review detail records for the current user, job, and connector.
-            var oModel = this.getOwnerComponent().getModel();
+            var oModel = this._getODataModel();
             var oBundle = this.getView().getModel("i18n").getResourceBundle();
             oModel.setUseBatch(false);
             this.getView().setBusy(true);
@@ -69,14 +67,8 @@ sap.ui.define([
                             oItem.Action = oBundle.getText("btnRemove");
                         }
                     });
-                    this.getView().getModel("Display").setProperty("/Items", aItems);
-                    this.byId("DisplayTable").clearSelection();
+                    this.getView().getModel("fullAccessDisplayModel").setProperty("/Items", aItems);
                     this.getView().setBusy(false);
-                    if (bShowToast) {
-                        setTimeout(function() {
-                            MessageToast.show(oBundle.getText("msgRefreshSuccess", ["Review"]));
-                        }, 100);
-                    }
                 }.bind(this),
                 error: function() {
                     this.getView().setBusy(false);
@@ -87,7 +79,7 @@ sap.ui.define([
 
         onUtilizedPress: function(oEvent) {
             // Open the usage dialog and load the related transaction data for the selected role.
-            var oRole = oEvent.getSource().getBindingContext("Display").getObject();
+            var oRole = oEvent.getSource().getBindingContext("fullAccessDisplayModel").getObject();
             this._oSelectedRole = oRole;
             if (!this._oUsageDialog) {
                 this._oUsageDialog = sap.ui.xmlfragment(
@@ -127,10 +119,6 @@ sap.ui.define([
                 filters: aFilters,
                 success: function(oData) {
                     var aItems = oData.results || [];
-                    aItems.forEach(function(oItem) {
-                        oItem.OriginalAction = oItem.Action;
-                        oItem.OriginalComment = oItem.comments;
-                    });
                     this._getUsageModel().setProperty("/Items", aItems);
                     this._oUsageDialog.setBusy(false);
                     var oTable = this.byId("usageDisplayTable");
@@ -141,7 +129,7 @@ sap.ui.define([
                     }
                     this._highlightCriticalRows();
                 }.bind(this),
-                error: function(oError) {
+                error: function() {
                     this._oUsageDialog.setBusy(false);
                     MessageToast.show(oBundle.getText("msgLoadError", ["usage analysis"]));
                 }.bind(this)
@@ -182,6 +170,5 @@ sap.ui.define([
                 this._oUsageDialog = null;
             }
         }
-        
     });
 });

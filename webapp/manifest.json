@@ -114,6 +114,13 @@
           "target": [
             "TargetSoDReview"
           ]
+        },
+         {
+          "name": "SoDDisplayView",
+          "pattern": "SoDDisplay/{user}/{jobId}/{connector}/{reviewType}/{fullName}",
+          "target": [
+            "TargetSoDDisplay"
+          ]
         }
       ],
       "targets": {
@@ -144,6 +151,13 @@
           "clearControlAggregation": false,
           "viewId": "SoDReview",
           "viewName": "SoDReview"
+        },
+        "TargetSoDDisplay": {
+          "viewType": "XML",
+          "transition": "slide",
+          "clearControlAggregation": true,
+          "viewId": "SoDDisplay",
+          "viewName": "SoDDisplay"
         }
       }
     },

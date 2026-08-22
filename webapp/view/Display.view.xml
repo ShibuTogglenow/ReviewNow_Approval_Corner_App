@@ -24,7 +24,7 @@
 								densityAware="false"
 								class="DisplayNowLogo"/>
 							<Title
-								text="{Display>/pageTitle}"
+								text="{fullAccessDisplayModel>/pageTitle}"
 								level="H3"/>
 						</VBox>
 					</HBox>
@@ -45,7 +45,7 @@
 			<!-- Display Table -->
 			<uiTable:Table
 				id="DisplayTable"
-				rows="{Display>/Items}"
+				rows="{fullAccessDisplayModel>/Items}"
 				selectionMode="MultiToggle"
 				enableBusyIndicator="true"
 				enableColumnReordering="true"
@@ -58,7 +58,7 @@
 						width="17rem">
 						<Label text="{i18n>displayRoleProfileName}"/>
 						<uiTable:template>
-							<Text text="{Display>Role}"/>
+							<Text text="{fullAccessDisplayModel>Role}"/>
 						</uiTable:template>
 					</uiTable:Column>
 					<uiTable:Column
@@ -68,7 +68,7 @@
 						width="26rem">
 						<Label text="{i18n>displayRoleProfileDescription}"/>
 						<uiTable:template>
-							<Text text="{Display>RoleDesc}"/>
+							<Text text="{fullAccessDisplayModel>RoleDesc}"/>
 						</uiTable:template>
 					</uiTable:Column>
 					<uiTable:Column
@@ -77,7 +77,7 @@
 						filterProperty="FromDate">
 						<Label text="{i18n>displayFromDate}"/>
 						<uiTable:template>
-							<Text text="{Display>FromDate}"/>
+							<Text text="{fullAccessDisplayModel>FromDate}"/>
 						</uiTable:template>
 					</uiTable:Column>
 					<uiTable:Column
@@ -87,7 +87,7 @@
 						>
 						<Label text="{i18n>displayToDate}"/>
 						<uiTable:template>
-							<Text text="{Display>ToDate}"/>
+							<Text text="{fullAccessDisplayModel>ToDate}"/>
 						</uiTable:template>
 					</uiTable:Column>
 					<uiTable:Column
@@ -98,7 +98,7 @@
 						<Label text="{i18n>displayUsageCount}"/>
 						<uiTable:template>
 							<Link
-							text="{Display>UtilizationText}"
+							text="{fullAccessDisplayModel>UtilizationText}"
 							press="onUtilizedPress"/>
 						</uiTable:template>
 					</uiTable:Column>
@@ -109,7 +109,7 @@
 						width="9rem">
 						<Label text="{i18n>displayLicensingCategory}"/>
 						<uiTable:template>
-							<Text text="{Display>LicCat}"/>
+							<Text text="{fullAccessDisplayModel>LicCat}"/>
 						</uiTable:template>
 					</uiTable:Column>
 					<uiTable:Column
@@ -117,7 +117,7 @@
                         width="7rem">
                         <Label text="{i18n>displayAction}"/>
                         <uiTable:template>
-                            <Text text="{Display>Action}" />
+                            <Text text="{fullAccessDisplayModel>Action}" />
                         </uiTable:template>
                     </uiTable:Column>
                     <uiTable:Column
@@ -126,7 +126,7 @@
 						sortProperty="Comment" filterProperty="Comment">
                         <Label text="{i18n>displayComment}"/>
                         <uiTable:template>
-                            <Text text="{Display>Comment}" />
+                            <Text text="{fullAccessDisplayModel>Comment}" />
                         </uiTable:template>
                     </uiTable:Column>
 				</uiTable:columns>

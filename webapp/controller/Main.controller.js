@@ -309,9 +309,16 @@ sap.ui.define([
 
         onDisplayReview: function() {
             var oData = this._getSingleSelection();
-            if (oData) {
-                this._navigateToApproval("DisplayView", oData);
+            if (!oData) {
+                return;
             }
+            var sRouteName;
+            if (oData.REVIEW_TYPE === "SOD") {
+                sRouteName = "SoDDisplayView";
+            } else {
+                sRouteName = "DisplayView";
+            }
+            this._navigateToApproval(sRouteName, oData);
         },
 
         _getReassignDialog: function() {

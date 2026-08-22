@@ -1,0 +1,23 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core">
+
+    <SelectDialog
+        id="mitigationVHDialog"
+        contentHeight="500px"
+        title="{i18n>dlgSelectMitigation}"
+        rememberSelections="false"
+        search="onMitigationVHSearch"
+        confirm="onMitigationVHConfirm"
+        cancel="onMitigationVHCancel"
+        items="{
+            path: '/Mitigation_VH_SODSet'
+        }">
+
+        <StandardListItem
+            title="{ACCONTROLID}"
+            />
+
+    </SelectDialog>
+
+</core:FragmentDefinition>
