@@ -548,7 +548,7 @@ sap.ui.define([
                 this.getView().addDependent(this._oConflictDialog);
             }
             var oBundle = this.getView().getModel("i18n").getResourceBundle();
-            this._getConflictModel().setProperty("/title", oBundle.getText("conflictTitle", [oConflict.RiskId || ""]));
+            this._getConflictModel().setProperty("/title", oBundle.getText("conflictTitle", [this._getCurrentUser()]));
             this._loadConflictData(oConflict);
             this._oConflictDialog.open();
         },

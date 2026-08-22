@@ -27,14 +27,19 @@ sap.ui.define([
                 return;
             }
             oTable.setFirstVisibleRow(0);
-            var oHorizontalScrollbar = oTable.getDomRef("hsb");
-            if (oHorizontalScrollbar) {
-                oHorizontalScrollbar.scrollLeft = 0;
-            }
-            var oVerticalScrollbar = oTable.getDomRef("vsb");
-            if (oVerticalScrollbar) {
-                oVerticalScrollbar.scrollTop = 0;
-            }
+            var fnResetRenderedScroll = function() {
+                var oTableDom = oTable.getDomRef();
+                if (!oTableDom) {
+                    return;
+                }
+                var aScrollbars = oTableDom.querySelectorAll(".sapUiTableHSb, .sapUiTableVSb");
+                Array.prototype.forEach.call(aScrollbars, function(oScrollbar) {
+                    oScrollbar.scrollLeft = 0;
+                    oScrollbar.scrollTop = 0;
+                });
+            };
+            fnResetRenderedScroll();
+            setTimeout(fnResetRenderedScroll, 0);
         },
 
         _onRouteMatched: function(oEvent) {
@@ -83,6 +88,7 @@ sap.ui.define([
                     var aItems = oData.results || [];
 
                     this._getSoDDisplayModel().setProperty("/Items", aItems);
+                    this._resetTableScroll();
                     this.getView().setBusy(false);
                 }.bind(this),
                 error: function() {

@@ -112,26 +112,26 @@ sap.ui.define([
                 return;
             }
             oTable.setFirstVisibleRow(0);
-            var oHorizontalScrollbar = oTable.getDomRef("hsb");
-            if (oHorizontalScrollbar) {
-                oHorizontalScrollbar.scrollLeft = 0;
-            }
-            var oVerticalScrollbar = oTable.getDomRef("vsb");
-            if (oVerticalScrollbar) {
-                oVerticalScrollbar.scrollTop = 0;
-            }
-        },
-
-        _resetAllTableScroll: function() {
-            Object.keys(this._mTables).forEach(function(sKey) {
-                this._resetTableScroll(this._getTableByKey(sKey));
-            }, this);
+            var fnResetRenderedScroll = function() {
+                var oTableDom = oTable.getDomRef();
+                if (!oTableDom) {
+                    return;
+                }
+                var aScrollbars = oTableDom.querySelectorAll(".sapUiTableHSb, .sapUiTableVSb");
+                Array.prototype.forEach.call(aScrollbars, function(oScrollbar) {
+                    oScrollbar.scrollLeft = 0;
+                    oScrollbar.scrollTop = 0;
+                });
+            };
+            fnResetRenderedScroll();
+            setTimeout(fnResetRenderedScroll, 0);
         },
 
         onTabSelect: function(oEvent) {
             this._clearSelections();
-            this._resetAllTableScroll();
-            this._getMainModel().setProperty("/selectedKey", oEvent.getParameter("key"));
+            var sSelectedKey = oEvent.getParameter("key");
+            this._getMainModel().setProperty("/selectedKey", sSelectedKey);
+            this._resetTableScroll(this._getTableByKey(sSelectedKey));
         },
 
         _readData: function(sKey, oTable) {
@@ -167,6 +167,7 @@ sap.ui.define([
             var aResults = oData && oData.results ? oData.results : [];
             oMain.setProperty("/" + sKey, aResults);
             oMain.setProperty("/" + sKey + "Count", aResults.length);
+            this._resetTableScroll(this._getTableByKey(sKey));
             this._finalizeRead(oTable, sKey, true, null);
         },
 

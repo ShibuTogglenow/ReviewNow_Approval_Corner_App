@@ -13,11 +13,9 @@
         items="{
             path: '/Mitigation_VH_SODSet'
         }">
-
         <StandardListItem
             title="{ACCONTROLID}"
             />
-
     </SelectDialog>
 
 </core:FragmentDefinition>

@@ -58,3 +58,11 @@
 .commentBoxLink:active {
     background-color: #CCB200;
 }
+
+.commentBoxLink:focus,
+.commentBoxLink:focus-visible {
+    background-color: #87CEEB !important;
+    color: #000000 !important;
+    outline: 2px solid #2F6F86;
+    outline-offset: 1px;
+}
