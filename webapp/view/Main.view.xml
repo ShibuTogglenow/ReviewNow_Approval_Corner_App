@@ -27,6 +27,7 @@
             </VBox>
 
             <IconTabBar
+                id="mainTabBar"
                 select="onTabSelect"
                 selectedKey="{main>/selectedKey}">
                 <items>

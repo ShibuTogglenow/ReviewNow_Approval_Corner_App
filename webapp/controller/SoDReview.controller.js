@@ -60,6 +60,23 @@ sap.ui.define([
             });
             this.getView().setModel(oReviewModel, "review");
             this._loadReviewData();
+            this._resetTableScroll();
+        },
+
+        _resetTableScroll: function() {
+            var oTable = this.byId("sodReviewTable");
+            if (!oTable) {
+                return;
+            }
+            oTable.setFirstVisibleRow(0);
+            var oHorizontalScrollbar = oTable.getDomRef("hsb");
+            if (oHorizontalScrollbar) {
+                oHorizontalScrollbar.scrollLeft = 0;
+            }
+            var oVerticalScrollbar = oTable.getDomRef("vsb");
+            if (oVerticalScrollbar) {
+                oVerticalScrollbar.scrollTop = 0;
+            }
         },
 
         onRefresh: function() {

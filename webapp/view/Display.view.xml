@@ -21,8 +21,7 @@
 							<Image
 								src="{appUser>/logo}"
 								height="2.75rem"
-								densityAware="false"
-								class="DisplayNowLogo"/>
+								densityAware="false"/>
 							<Title
 								text="{fullAccessDisplayModel>/pageTitle}"
 								level="H3"/>

@@ -21,7 +21,24 @@ sap.ui.define([
             return this.getOwnerComponent().getModel();
         },
 
+        _resetTableScroll: function() {
+            var oTable = this.byId("sodDisplayTable");
+            if (!oTable) {
+                return;
+            }
+            oTable.setFirstVisibleRow(0);
+            var oHorizontalScrollbar = oTable.getDomRef("hsb");
+            if (oHorizontalScrollbar) {
+                oHorizontalScrollbar.scrollLeft = 0;
+            }
+            var oVerticalScrollbar = oTable.getDomRef("vsb");
+            if (oVerticalScrollbar) {
+                oVerticalScrollbar.scrollTop = 0;
+            }
+        },
+
         _onRouteMatched: function(oEvent) {
+            this._resetTableScroll();
             var oArgs = oEvent.getParameter("arguments");
             this._sUser = decodeURIComponent(oArgs.user);
             this._sJobId = decodeURIComponent(oArgs.jobId);

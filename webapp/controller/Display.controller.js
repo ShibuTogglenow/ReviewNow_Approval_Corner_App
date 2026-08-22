@@ -50,6 +50,8 @@ sap.ui.define([
             // Load review detail records for the current user, job, and connector.
             var oModel = this._getODataModel();
             var oBundle = this.getView().getModel("i18n").getResourceBundle();
+            this._displayRequestId = (this._displayRequestId || 0) + 1;
+            var iRequestId = this._displayRequestId;
             oModel.setUseBatch(false);
             this.getView().setBusy(true);
             oModel.read("/RNOW_ReviewDetailSet", {
@@ -59,6 +61,9 @@ sap.ui.define([
                     new Filter("Connector", FilterOperator.EQ, this._sConnector)
                 ],
                 success: function(oData) {
+                    if (iRequestId !== this._displayRequestId) {
+                        return;
+                    }
                     var aItems = oData.results || [];
                     aItems.forEach(function(oItem) {
                         if (oItem.Action === "RT") {
@@ -71,10 +76,21 @@ sap.ui.define([
                     this.getView().setBusy(false);
                 }.bind(this),
                 error: function() {
+                    if (iRequestId !== this._displayRequestId) {
+                        return;
+                    }
                     this.getView().setBusy(false);
                     MessageToast.show(oBundle.getText("msgLoadError", ["review details"]));
                 }.bind(this)
             });
+        },
+
+        onNavBack: function() {
+            this.getOwnerComponent().getRouter().navTo("RouteMain", {}, true);
+        },
+
+        onCancel: function() {
+            this.getOwnerComponent().getRouter().navTo("RouteMain", {}, true);
         },
 
         onUtilizedPress: function(oEvent) {
@@ -151,14 +167,6 @@ sap.ui.define([
                     oRow.addStyleClass("criticalRow");
                 }
             }, this);
-        },
-
-        onNavBack: function() {
-            this.getOwnerComponent().getRouter().navTo("RouteMain", {}, true);
-        },
-
-        onCancel: function() {
-            this.getOwnerComponent().getRouter().navTo("RouteMain", {}, true);
         },
 
         onExit: function() {

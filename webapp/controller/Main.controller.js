@@ -49,6 +49,7 @@ sap.ui.define([
                 reason: ""
             }), "reassign");
             this._getOwnerModel().setUseBatch(false);
+            this._attachTabBarFocusHandler();
             this._loadAllData();
             this._clearSelections();
         },
@@ -65,18 +66,6 @@ sap.ui.define([
             return this.getOwnerComponent().getModel();
         },
 
-        _onRouteMatched: function() {
-            this._clearSelections();
-            this._loadAllData();
-        },
-
-        _clearSelections: function() {
-            var oTable = this._getCurrentTable();
-            if (oTable) {
-                oTable.clearSelection();
-            }
-        },
-
         _getCurrentTable: function() {
             var sKey = this._getMainModel().getProperty("/selectedKey");
             return this.byId(this._mTables[sKey]);
@@ -90,8 +79,58 @@ sap.ui.define([
             return this.byId(this._mTables[sKey]);
         },
 
+        _attachTabBarFocusHandler: function() {
+            var oTabBar = this.byId("mainTabBar");
+            if (oTabBar) {
+                oTabBar.attachBrowserEvent("mousedown", this._preventEmptyTabBarFocus, this);
+            }
+        },
+
+        _preventEmptyTabBarFocus: function(oEvent) {
+            var oTarget = jQuery(oEvent.target);
+            var bInTabHeader = oTarget.closest(".sapMITBHead").length > 0;
+            var bOnTab = oTarget.closest(".sapMITBFilter").length > 0;
+            if (bInTabHeader && !bOnTab) {
+                oEvent.preventDefault();
+            }
+        },
+
+        _onRouteMatched: function() {
+            this._clearSelections();
+            this._loadAllData();
+        },
+
+        _clearSelections: function() {
+            var oTable = this._getCurrentTable();
+            if (oTable) {
+                oTable.clearSelection();
+            }
+        },
+
+        _resetTableScroll: function(oTable) {
+            if (!oTable) {
+                return;
+            }
+            oTable.setFirstVisibleRow(0);
+            var oHorizontalScrollbar = oTable.getDomRef("hsb");
+            if (oHorizontalScrollbar) {
+                oHorizontalScrollbar.scrollLeft = 0;
+            }
+            var oVerticalScrollbar = oTable.getDomRef("vsb");
+            if (oVerticalScrollbar) {
+                oVerticalScrollbar.scrollTop = 0;
+            }
+        },
+
+        _resetAllTableScroll: function() {
+            Object.keys(this._mTables).forEach(function(sKey) {
+                this._resetTableScroll(this._getTableByKey(sKey));
+            }, this);
+        },
+
         onTabSelect: function(oEvent) {
             this._clearSelections();
+            this._resetAllTableScroll();
             this._getMainModel().setProperty("/selectedKey", oEvent.getParameter("key"));
         },
 
@@ -219,52 +258,6 @@ sap.ui.define([
             }
         },
 
-        onViewComment: function(oEvent) {
-            var oContext =
-                oEvent
-                .getSource()
-                .getBindingContext("main");
-            var sComment =
-                oContext.getProperty("COMMENTS") || "";
-            var oBundle =
-                this.getView()
-                .getModel("i18n")
-                .getResourceBundle();
-
-            if (!this._oViewCommentDialog) {
-                this._oViewCommentText =
-                    new sap.m.Text({
-                        text: ""
-                    }).addStyleClass(
-                        "sapUiSmallMargin"
-                    );
-                this._oViewCommentDialog =
-                    new sap.m.Dialog({
-                        title: oBundle.getText(
-                            "dlgViewCommentTitle"
-                        ),
-                        contentWidth: "25rem",
-                        content: [
-                            this._oViewCommentText
-                        ],
-                        beginButton: new sap.m.Button({
-                            text: oBundle.getText("btnClose"),
-                            press: function() {
-                                this._oViewCommentDialog.close();
-                            }.bind(this)
-                        })
-                    });
-                this.getView().addDependent(
-                    this._oViewCommentDialog
-                );
-            }
-
-            this._oViewCommentText.setText(
-                sComment || oBundle.getText("msgNoComment")
-            );
-            this._oViewCommentDialog.open();
-        },
-
         _getSingleSelection: function(sMessage) {
             var oTable = this._getCurrentTable();
             if (!oTable) {
@@ -321,6 +314,52 @@ sap.ui.define([
             this._navigateToApproval(sRouteName, oData);
         },
 
+        onViewComment: function(oEvent) {
+            var oContext =
+                oEvent
+                .getSource()
+                .getBindingContext("main");
+            var sComment =
+                oContext.getProperty("COMMENTS") || "";
+            var oBundle =
+                this.getView()
+                .getModel("i18n")
+                .getResourceBundle();
+
+            if (!this._oViewCommentDialog) {
+                this._oViewCommentText =
+                    new sap.m.Text({
+                        text: ""
+                    }).addStyleClass(
+                        "sapUiSmallMargin"
+                    );
+                this._oViewCommentDialog =
+                    new sap.m.Dialog({
+                        title: oBundle.getText(
+                            "dlgViewCommentTitle"
+                        ),
+                        contentWidth: "25rem",
+                        content: [
+                            this._oViewCommentText
+                        ],
+                        beginButton: new sap.m.Button({
+                            text: oBundle.getText("btnClose"),
+                            press: function() {
+                                this._oViewCommentDialog.close();
+                            }.bind(this)
+                        })
+                    });
+                this.getView().addDependent(
+                    this._oViewCommentDialog
+                );
+            }
+
+            this._oViewCommentText.setText(
+                sComment || oBundle.getText("msgNoComment")
+            );
+            this._oViewCommentDialog.open();
+        },
+
         _getReassignDialog: function() {
             if (!this._oReassignDialog) {
                 this._oReassignDialog = sap.ui.xmlfragment(
@@ -341,7 +380,7 @@ sap.ui.define([
             }
         },
 
-        onReviewerChange: function (oEvent) {
+        onReviewerChange: function(oEvent) {
             var oBundle = this.getView().getModel("i18n").getResourceBundle();
             var oInput = oEvent.getSource();
             var sReviewer = oInput.getValue().trim().toUpperCase();
@@ -352,13 +391,13 @@ sap.ui.define([
             var oModel = this._getOwnerModel();
             oModel.read("/Reassign_VHSet", {
                 filters: [
-                    new sap.ui.model.Filter(
+                    new Filter(
                         "REVIEWER",
-                        sap.ui.model.FilterOperator.EQ,
+                        FilterOperator.EQ,
                         sReviewer
                     )
                 ],
-                success: function (oData) {
+                success: function(oData) {
                     if (oData.results.length > 0) {
                         // Valid reviewer
                         oInput.setValue(sReviewer);
@@ -372,7 +411,7 @@ sap.ui.define([
                         oInput.setValueStateText(oBundle.getText("valReviewerInvalid"));
                     }
                 }.bind(this),
-                error: function () {
+                error: function() {
                     oInput.setValueState("Error");
                     oInput.setValueStateText(oBundle.getText("valReviewerValidateError"));
                 }
@@ -394,17 +433,17 @@ sap.ui.define([
 
         onReviewerVHSearch: function(oEvent) {
             var sValue = oEvent.getParameter("value").toUpperCase();
-            var oFilter = new sap.ui.model.Filter({
+            var oFilter = new Filter({
                 filters: [
-                    new sap.ui.model.Filter("REVIEWER", sap.ui.model.FilterOperator.Contains, sValue),
-                    new sap.ui.model.Filter("REVIEWERNAME", sap.ui.model.FilterOperator.Contains, sValue)
+                    new Filter("REVIEWER", FilterOperator.Contains, sValue),
+                    new Filter("REVIEWERNAME", FilterOperator.Contains, sValue)
                 ],
                 and: false
             });
             oEvent.getSource().getBinding("items").filter(oFilter);
         },
 
-       onReviewerVHConfirm: function(oEvent) {
+        onReviewerVHConfirm: function(oEvent) {
             var oSelectedItem = oEvent.getParameter("selectedItem");
             if (!oSelectedItem) {
                 return;
@@ -435,7 +474,7 @@ sap.ui.define([
         },
 
         onReassignConfirm: function() {
-             // Submit the reassignment request and refresh the impacted tab on success.
+            // Submit the reassignment request and refresh the impacted tab on success.
             var oBundle = this.getView().getModel("i18n").getResourceBundle();
             var oData = this._getReassignModel().getData();
             var oApproval = this._oSelectedApproval;
@@ -485,7 +524,7 @@ sap.ui.define([
                     }
                     MessageBox.error(
                         oBundle.getText("errReassignFailed") +
-                        (sMsg ? "\n\n" + oBundle.getText("errBackendSays") + "\n" + sMsg : "")            
+                        (sMsg ? "\n\n" + oBundle.getText("errBackendSays") + "\n" + sMsg : "")
                     );
                 }.bind(this)
             });
@@ -499,10 +538,10 @@ sap.ui.define([
             }
         },
 
-        _clearReassignValidation: function () {
+        _clearReassignValidation: function() {
             var oReviewer = this.byId("reviewerNameInput");
             var oComment = this.byId("reassignComment");
-            [oReviewer, oComment].forEach(function (oControl) {
+            [oReviewer, oComment].forEach(function(oControl) {
                 if (oControl) {
                     oControl.setValueState(sap.ui.core.ValueState.None);
                     oControl.setValueStateText("");
@@ -510,7 +549,7 @@ sap.ui.define([
             });
         },
 
-        _validateReassign: function (oData) {
+        _validateReassign: function(oData) {
             var oReviewer = this.byId("reviewerNameInput");
             var oComment = this.byId("reassignComment");
             var oBundle = this.getView().getModel("i18n").getResourceBundle();
@@ -546,11 +585,15 @@ sap.ui.define([
             });
             this._clearReassignValidation();
         },
-        
+
         onExit: function() {
             try {
                 this.getOwnerComponent().getRouter().getRoute("RouteMain").detachPatternMatched(this._onRouteMatched, this);
             } catch (e) {}
+            var oTabBar = this.byId("mainTabBar");
+            if (oTabBar) {
+                oTabBar.detachBrowserEvent("mousedown", this._preventEmptyTabBarFocus, this);
+            }
             if (this._oReassignDialog) {
                 this._oReassignDialog.destroy();
                 this._oReassignDialog = null;

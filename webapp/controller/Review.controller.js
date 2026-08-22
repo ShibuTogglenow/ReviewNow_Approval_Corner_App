@@ -67,6 +67,22 @@ sap.ui.define([
             this._loadReviewData(true);
         },
 
+        onNavBack: function() {
+            this.getOwnerComponent().getRouter().navTo("RouteMain", {}, true);
+        },
+
+        onCancel: function() {
+            this.byId("reviewTable").clearSelection();
+        },
+
+        onRetain: function() {
+            this._updateSelectedRows("RT");
+        },
+
+        onRemove: function() {
+            this._updateSelectedRows("RM");
+        },
+
        _loadReviewData: function(bShowToast) {
             // Load review detail rows for the selected user, job, and connector.
             var oModel = this._getODataModel();
@@ -134,7 +150,7 @@ sap.ui.define([
             var aChangedItems = [];
             for (var i = 0; i < aItems.length; i++) {
                 var oItem = aItems[i];
-                var oOriginal = aOriginalItems[i];
+                var oOriginal = aOriginalItems[i] || {};
                 var bChanged =
                     (oItem.Action || "") !== (oOriginal.Action || "") ||
                     (oItem.Comment || "") !== (oOriginal.Comment || "");
@@ -302,10 +318,9 @@ sap.ui.define([
         },
 
         _markItemsAsSaved: function(aChangedItems) {
-            aChangedItems.forEach(function(oItem) {
-                oItem.OriginalAction = oItem.Action;
-                oItem.OriginalComment = oItem.Comment;
-            });
+            var oModel = this._getReviewModel();
+            var aItems = oModel.getProperty("/Items") || [];
+            oModel.setProperty("/OriginalItems", JSON.parse(JSON.stringify(aItems)));
         },
 
         _getErrorMessage: function(oError, sFallback) {
@@ -317,29 +332,6 @@ sap.ui.define([
                 sMsg = oError.responseText || oError.message || sFallback;
             }
             return sMsg;
-        },
-
-        onNavBack: function() {
-            this.getOwnerComponent().getRouter().navTo("RouteMain", {}, true);
-        },
-
-        onCancel: function() {
-            this.byId("reviewTable").clearSelection();
-            // var oReviewModel = this._getReviewModel();
-            // var aOriginalItems = oReviewModel.getProperty("/OriginalItems") || [];
-            // oReviewModel.setProperty(
-            //     "/Items",
-            //     JSON.parse(JSON.stringify(aOriginalItems))
-            // );
-            // oReviewModel.refresh(true);
-        },
-
-        onRetain: function() {
-            this._updateSelectedRows("RT");
-        },
-
-        onRemove: function() {
-            this._updateSelectedRows("RM");
         },
 
         _updateSelectedRows: function(sAction) {
