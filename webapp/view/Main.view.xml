@@ -457,6 +457,8 @@
                             alternateRowColors="true"
                             enableBusyIndicator="true"
                             enableColumnReordering="true"
+                            growing="true"
+                            growingThreshold="500"
                             visibleRowCountMode="Auto"
                             minAutoRowCount="15">
 

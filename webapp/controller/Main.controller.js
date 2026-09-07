@@ -33,6 +33,8 @@ sap.ui.define([
                 Closed: "searchFilterClosed"
             };
             this.REQUEST_TIMEOUT_MS = 120000;
+            this._bDataLoaded = false;
+            this._bDataLoading = false;
             var oBundle = this.getView().getModel("i18n") && this.getView().getModel("i18n").getResourceBundle();
             this.getView().setModel(new JSONModel({
                 pageTitle: this._sUser && oBundle ? oBundle.getText("mainPageTitleUser", [this._sUser]) : (oBundle ? oBundle.getText("mainTitle") : (this._sUser ? "Approval Corner for " + this._sUser : "Approval Corner")),
@@ -97,7 +99,9 @@ sap.ui.define([
 
         _onRouteMatched: function() {
             this._clearSelections();
-            this._loadAllData();
+            if (!this._bDataLoaded && !this._bDataLoading) {
+                this._loadAllData();
+            }
         },
 
         _clearSelections: function() {
@@ -214,13 +218,19 @@ sap.ui.define([
             }
             this._pendingReads--;
             if (this._pendingReads === 0) {
+                this._bDataLoading = false;
+                this._bDataLoaded = true;
                 this.getView().setBusy(false);
             }
         },
 
         _loadAllData: function() {
             // Load all three approval tabs together and track when the async reads complete.
+            if (this._bDataLoaded || this._bDataLoading) {
+                return;
+            }
             this.getView().setBusy(true);
+            this._bDataLoading = true;
             this._pendingReads = 3;
             Object.keys(this._mEntitySets).forEach(function(sKey) {
                 this._readData(sKey);

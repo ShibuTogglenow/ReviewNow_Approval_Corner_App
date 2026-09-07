@@ -491,7 +491,7 @@ sap.ui.define([
         },
 
         onMitigationVHSearch: function(oEvent) {
-            var sValue = oEvent.getParameter("value") || "";
+            var sValue = (oEvent.getParameter("value") || "").trim().toUpperCase();
             var oBinding = oEvent.getSource().getBinding("items");
             if (!oBinding) {
                 return;
@@ -503,7 +503,7 @@ sap.ui.define([
             var oFilter = new Filter(
                 "ACCONTROLID",
                 FilterOperator.Contains,
-                sValue.trim()
+                sValue
             );
             oBinding.filter([oFilter]);
         },

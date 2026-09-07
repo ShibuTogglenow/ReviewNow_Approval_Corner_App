@@ -5,7 +5,7 @@
 	<Dialog
         id="conflictDialog"
         title="{conflict>/title}"
-        contentWidth="100%"
+        contentWidth="90%"
         contentHeight="550px"
         resizable="true"
         draggable="true">

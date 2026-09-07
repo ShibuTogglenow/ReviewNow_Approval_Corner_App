@@ -131,6 +131,28 @@
                             <Text text="{sodDisplayModel>LineCount}"/>
                         </uiTable:template>
                     </uiTable:Column>
+                     <!-- Valid From -->
+                    <uiTable:Column
+                        hAlign="Center"
+                        sortProperty="VALIDFROM"
+                        filterProperty="VALIDFROM"
+                        width="6rem">
+                        <Label text="{i18n>displayValidFrom}"/>
+                        <uiTable:template>
+                            <Text text="{sodDisplayModel>VALIDFROM}"/>
+                        </uiTable:template>
+                    </uiTable:Column>
+                    <!-- Valid To -->
+                    <uiTable:Column
+                        hAlign="Center"
+                        sortProperty="VALIDTO"
+                        filterProperty="VALIDTO"
+                        width="6rem">
+                        <Label text="{i18n>displayValidTo}"/>
+                        <uiTable:template>
+                            <Text text="{sodDisplayModel>VALIDTO}"/>
+                        </uiTable:template>
+                    </uiTable:Column>
                     <!-- Risk Action -->
                     <uiTable:Column
                         hAlign="Center"
